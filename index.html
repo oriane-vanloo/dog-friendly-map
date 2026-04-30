@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dog-Friendly Melbourne Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    >
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQPDn5EA+T5iEki6hthkE4N2oX7uRLM="
+      crossorigin=""
+    >
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Map controls and places">
+        <header class="sidebar-header">
+          <div class="brand-lockup">
+            <img class="brand-logo" src="./assets/logo.png" alt="">
+            <div class="brand-copy">
+              <h1>Dog-Friendly Map</h1>
+            </div>
+          </div>
+          <div class="header-meta">
+            <span class="area-pill">Melbourne inner suburbs</span>
+            <p class="summary">Dog-friendly cafes, pubs, parks and shops across Melbourne inner suburbs.</p>
+          </div>
+        </header>
+
+        <div class="search-wrap">
+          <label for="search">Search places</label>
+          <input id="search" type="search" placeholder="Search by name, suburb, or feature">
+        </div>
+
+        <section id="selectedPlace" class="selected-place" aria-live="polite">
+          <p class="empty-selection">Select a place to see details.</p>
+        </section>
+
+        <div class="results-meta" aria-live="polite">
+          <span id="resultCount">Loading places...</span>
+        </div>
+
+        <ol id="placeList" class="place-list" aria-label="Dog-friendly places"></ol>
+      </aside>
+
+      <section class="map-panel" aria-label="Dog-friendly Melbourne map">
+        <div class="category-filters map-overlay" aria-label="Category filters">
+          <button class="filter-button active" data-category="Cafe" type="button">
+            <span class="filter-checkbox" aria-hidden="true"></span>
+            <img src="./assets/icons/cafe-marker.png" alt=""> Cafe
+          </button>
+          <button class="filter-button active" data-category="Pub/Bar" type="button">
+            <span class="filter-checkbox" aria-hidden="true"></span>
+            <img src="./assets/icons/pub-marker.png" alt=""> Pub/Bar
+          </button>
+          <button class="filter-button active" data-category="Park" type="button">
+            <span class="filter-checkbox" aria-hidden="true"></span>
+            <img src="./assets/icons/park-marker.png" alt=""> Park
+          </button>
+          <button class="filter-button active" data-category="Shop" type="button">
+            <span class="filter-checkbox" aria-hidden="true"></span>
+            <img src="./assets/icons/shop-marker.png" alt=""> Shop
+          </button>
+        </div>
+        <div id="map"></div>
+      </section>
+    </main>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="./data/locations.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
