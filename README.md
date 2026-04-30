@@ -22,3 +22,12 @@ http://127.0.0.1:8765/
 - `data/locations.json` is the canonical JSON data.
 - `data/locations.js` mirrors the JSON for `file://` usage.
 - `assets/icons/*-marker.png` are the category marker icons.
+
+## Photos
+
+Selected place cards support two photo sources:
+
+- Manual photos in `data/manual-photos.js`, stored under `assets/photos/`, are used first.
+- Google Places photos load on demand when `config.js` has a browser-restricted Google Maps API key.
+
+For Google photos, enable Maps JavaScript API and Places API (New), restrict the key to the live site URL, and keep the visible author/Google Maps attribution overlay.

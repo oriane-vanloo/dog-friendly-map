@@ -70,9 +70,24 @@ const selectedPlace = document.querySelector("#selectedPlace");
 const filterButtons = [...document.querySelectorAll(".filter-button")];
 const mapElement = document.querySelector("#map");
 const mapPanel = document.querySelector(".map-panel");
+const mapExpandToggle = document.querySelector("#mapExpandToggle");
+const appConfig = {
+  googleMapsApiKey: "",
+  useGooglePlacePhotos: true,
+  googlePhotoSearch: true,
+  googlePhotoMaxWidth: 720,
+  googlePhotoMaxHeight: 420,
+  ...(window.DOG_MAP_CONFIG || {}),
+};
+const manualPhotoOverrides = window.DOG_FRIENDLY_MANUAL_PHOTOS || {};
+const googlePhotoCache = new Map();
 
 let mapRefreshFrame = null;
 let shouldFitBoundsOnRefresh = false;
+let googleMapsScriptPromise = null;
+let placesLibraryPromise = null;
+let isMapExpanded = false;
+const mobileMapQuery = window.matchMedia("(max-width: 860px)");
 
 function escapeHtml(value) {
   return String(value)
@@ -81,6 +96,14 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function slugify(value) {
+  return String(value)
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 function categoryClass(category) {
@@ -138,6 +161,239 @@ function googleMapsUrl(place) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name}, ${place.address}`)}`;
 }
 
+function manualPhotoKey(place) {
+  const location = getLocationParts(place.address);
+  return slugify(`${place.name}-${location.suburb || place.address}`);
+}
+
+function googlePhotosEnabled() {
+  return Boolean(appConfig.useGooglePlacePhotos && appConfig.googleMapsApiKey);
+}
+
+function normalisePhoto(photo, place) {
+  if (!photo || !photo.src) {
+    return null;
+  }
+
+  const attributions = Array.isArray(photo.attributions)
+    ? photo.attributions
+    : [{
+      displayName: photo.credit || photo.source || "Photo",
+      uri: photo.creditUrl || photo.url || "",
+    }];
+
+  return {
+    src: photo.src,
+    alt: photo.alt || `Photo of ${place.name}`,
+    source: photo.source || "",
+    providerUrl: photo.providerUrl || "",
+    attributions: attributions
+      .filter((attribution) => attribution && attribution.displayName)
+      .map((attribution) => ({
+        displayName: attribution.displayName,
+        uri: attribution.uri || "",
+      })),
+  };
+}
+
+function getManualPhotos(place) {
+  const overrideKeys = [place.id, manualPhotoKey(place), place.name].filter(Boolean);
+  const overrides = overrideKeys.flatMap((key) => {
+    const override = manualPhotoOverrides[key];
+    if (Array.isArray(override)) {
+      return override;
+    }
+    return override ? [override] : [];
+  });
+  const inlinePhotos = Array.isArray(place.photos) ? place.photos : [];
+
+  return [...overrides, ...inlinePhotos]
+    .map((photo) => normalisePhoto(photo, place))
+    .filter(Boolean);
+}
+
+function attributionHtml(photo) {
+  const authorLinks = photo.attributions.length
+    ? photo.attributions.map((attribution) => {
+      const name = escapeHtml(attribution.displayName);
+      if (!attribution.uri) {
+        return name;
+      }
+
+      return `<a href="${escapeHtml(attribution.uri)}" target="_blank" rel="noopener noreferrer">${name}</a>`;
+    }).join(", ")
+    : "Google Maps contributor";
+  const source = photo.source
+    ? `<span aria-hidden="true">·</span> ${photo.providerUrl ? `<a href="${escapeHtml(photo.providerUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(photo.source)}</a>` : escapeHtml(photo.source)}`
+    : "";
+
+  return `Photo: ${authorLinks} ${source}`;
+}
+
+function renderPlacePhoto(photo, place) {
+  return `
+    <figure class="place-photo is-loading">
+      <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || `Photo of ${place.name}`)}" loading="lazy" data-place-photo>
+      <figcaption>${attributionHtml(photo)}</figcaption>
+    </figure>
+  `;
+}
+
+function renderPhotoPlaceholder(place) {
+  return `
+    <div class="place-photo place-photo-placeholder is-loading" data-photo-place-id="${escapeHtml(place.id)}">
+      <span>Loading photo</span>
+    </div>
+  `;
+}
+
+function setupPhotoLoadState(container) {
+  const image = container.querySelector("[data-place-photo]");
+  if (!image) {
+    return;
+  }
+
+  const showImage = () => {
+    container.classList.remove("is-loading");
+    container.classList.add("is-loaded");
+  };
+  const hideImage = () => {
+    container.remove();
+  };
+
+  image.addEventListener("load", showImage, { once: true });
+  image.addEventListener("error", hideImage, { once: true });
+
+  if (image.complete) {
+    if (image.naturalWidth > 0) {
+      showImage();
+    } else {
+      hideImage();
+    }
+  }
+}
+
+function loadGoogleMapsScript() {
+  if (window.google?.maps?.importLibrary) {
+    return Promise.resolve();
+  }
+
+  if (!googleMapsScriptPromise) {
+    googleMapsScriptPromise = new Promise((resolve, reject) => {
+      window.__dogMapGoogleMapsReady = () => resolve();
+      const script = document.createElement("script");
+      const params = new URLSearchParams({
+        key: appConfig.googleMapsApiKey,
+        v: "weekly",
+        loading: "async",
+        callback: "__dogMapGoogleMapsReady",
+      });
+
+      script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
+      script.async = true;
+      script.onerror = () => reject(new Error("Could not load Google Maps JavaScript API."));
+      document.head.append(script);
+    });
+  }
+
+  return googleMapsScriptPromise;
+}
+
+async function getPlacesLibrary() {
+  if (!placesLibraryPromise) {
+    placesLibraryPromise = loadGoogleMapsScript().then(() => google.maps.importLibrary("places"));
+  }
+
+  return placesLibraryPromise;
+}
+
+async function fetchGooglePlacePhoto(place) {
+  if (!googlePhotosEnabled()) {
+    return null;
+  }
+
+  if (!googlePhotoCache.has(place.id)) {
+    googlePhotoCache.set(place.id, (async () => {
+      const { Place } = await getPlacesLibrary();
+      const placeId = place.googlePlaceId || place.googleMapsPlaceId || place.placeId;
+      let googlePlace = null;
+
+      if (placeId) {
+        googlePlace = new Place({ id: placeId });
+        await googlePlace.fetchFields({ fields: ["displayName", "photos", "googleMapsURI"] });
+      } else if (appConfig.googlePhotoSearch) {
+        const response = await Place.searchByText({
+          textQuery: `${place.name}, ${place.address}`,
+          fields: ["id", "displayName", "photos", "googleMapsURI"],
+          locationBias: {
+            center: { lat: place.lat, lng: place.lng },
+            radius: 450,
+          },
+          maxResultCount: 1,
+          region: "au",
+        });
+
+        googlePlace = response.places?.[0] || null;
+      }
+
+      const photo = googlePlace?.photos?.[0];
+      if (!photo) {
+        return null;
+      }
+
+      const attributions = Array.isArray(photo.authorAttributions)
+        ? photo.authorAttributions.map((attribution) => ({
+          displayName: attribution.displayName || "Google Maps contributor",
+          uri: attribution.uri || "",
+        }))
+        : [];
+
+      return {
+        src: photo.getURI({
+          maxWidth: Number(appConfig.googlePhotoMaxWidth) || 720,
+          maxHeight: Number(appConfig.googlePhotoMaxHeight) || 420,
+        }),
+        alt: `Photo of ${place.name}`,
+        source: "Google Maps",
+        providerUrl: googlePlace.googleMapsURI || googleMapsUrl(place),
+        attributions,
+      };
+    })());
+  }
+
+  return googlePhotoCache.get(place.id);
+}
+
+async function hydrateSelectedPhoto(place) {
+  const photoSlot = selectedPlace.querySelector(".place-photo-placeholder");
+  if (!photoSlot || photoSlot.dataset.photoPlaceId !== place.id) {
+    return;
+  }
+
+  try {
+    const photo = await fetchGooglePlacePhoto(place);
+    if (!selectedPlace.contains(photoSlot) || selectedPlace.classList.contains("is-empty") || selectedPlaceId !== place.id) {
+      return;
+    }
+
+    if (!photo) {
+      photoSlot.remove();
+      return;
+    }
+
+    photoSlot.outerHTML = renderPlacePhoto(photo, place);
+    const loadedPhoto = selectedPlace.querySelector(".place-photo");
+    if (loadedPhoto) {
+      setupPhotoLoadState(loadedPhoto);
+    }
+  } catch (error) {
+    console.warn(`Could not load Google photo for ${place.name}`, error);
+    if (selectedPlace.contains(photoSlot)) {
+      photoSlot.remove();
+    }
+  }
+}
+
 function popupHtml(place) {
   const location = getLocationParts(place.address);
 
@@ -162,12 +418,22 @@ function renderSelectedPlace(place) {
 
   selectedPlace.classList.remove("is-empty");
   const location = getLocationParts(place.address);
+  const manualPhoto = getManualPhotos(place)[0];
+  const shouldLoadGooglePhoto = !manualPhoto && googlePhotosEnabled();
+  const photoMarkup = manualPhoto
+    ? renderPlacePhoto(manualPhoto, place)
+    : shouldLoadGooglePhoto
+      ? renderPhotoPlaceholder(place)
+      : "";
   selectedPlace.innerHTML = `
-    <button class="detail-close" type="button" aria-label="Close place details">×</button>
+    <button class="detail-close" type="button" aria-label="Close place details">
+      <img src="./assets/icons/x-closeicon.svg" alt="">
+    </button>
     <div class="selected-tags">
       <span class="tag ${categoryClass(place.category)}">${escapeHtml(place.category)}</span>
       ${location.suburb ? `<span class="tag suburb">${escapeHtml(location.suburb)}</span>` : ""}
     </div>
+    ${photoMarkup}
     <h2>${escapeHtml(place.name)}</h2>
     <p class="selected-description">${escapeHtml(place.description)}</p>
     <p class="selected-address">
@@ -180,6 +446,12 @@ function renderSelectedPlace(place) {
   selectedPlace.querySelector(".detail-close").addEventListener("click", () => {
     clearSelectedPlace();
   });
+
+  selectedPlace.querySelectorAll(".place-photo").forEach((photo) => setupPhotoLoadState(photo));
+
+  if (shouldLoadGooglePhoto) {
+    hydrateSelectedPhoto(place);
+  }
 }
 
 function renderMarkers(filteredPlaces) {
@@ -293,6 +565,10 @@ function render({ fitBounds = false } = {}) {
   refreshMapLayout({ fitBounds });
 }
 
+function shouldUseBottomSheet() {
+  return mobileMapQuery.matches && isMapExpanded;
+}
+
 function selectPlace(place, { openPopup = false, pan = false } = {}) {
   selectedPlaceId = place.id;
   render();
@@ -301,7 +577,9 @@ function selectPlace(place, { openPopup = false, pan = false } = {}) {
   if (pan) {
     map.flyTo([place.lat, place.lng], 17, { duration: 0.55 });
   }
-  if (openPopup && marker) {
+  if (shouldUseBottomSheet()) {
+    map.closePopup();
+  } else if (openPopup && marker) {
     marker.openPopup();
   }
 }
@@ -310,6 +588,52 @@ function clearSelectedPlace() {
   selectedPlaceId = null;
   map.closePopup();
   render();
+}
+
+function setMapInteractivity(enabled) {
+  if (!map) {
+    return;
+  }
+
+  const method = enabled ? "enable" : "disable";
+  [
+    map.dragging,
+    map.touchZoom,
+    map.doubleClickZoom,
+    map.scrollWheelZoom,
+    map.boxZoom,
+    map.keyboard,
+  ].forEach((handler) => {
+    if (handler && typeof handler[method] === "function") {
+      handler[method]();
+    }
+  });
+
+  if (map.tap && typeof map.tap[method] === "function") {
+    map.tap[method]();
+  }
+}
+
+function updateMobileMapState({ fitBounds = false } = {}) {
+  const isMobile = mobileMapQuery.matches;
+  const shouldExpandMap = isMobile && isMapExpanded;
+
+  mapPanel.classList.toggle("is-expanded", shouldExpandMap);
+  document.body.classList.toggle("map-expanded", shouldExpandMap);
+  mapExpandToggle.hidden = !isMobile;
+  mapExpandToggle.setAttribute("aria-expanded", String(shouldExpandMap));
+  mapExpandToggle.setAttribute("aria-label", shouldExpandMap ? "Collapse map" : "Expand map");
+  mapExpandToggle.querySelector(".map-expand-symbol").innerHTML = shouldExpandMap
+    ? '<img src="./assets/icons/x-closeicon.svg" alt="">'
+    : '<img src="./assets/icons/expandicon.svg" alt="">';
+
+  if (!shouldExpandMap) {
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+  }
+
+  setMapInteractivity(true);
+  refreshMapLayout({ fitBounds });
 }
 
 function setupFilters() {
@@ -334,6 +658,39 @@ function setupFilters() {
   });
 
   searchInput.addEventListener("input", () => render({ fitBounds: true }));
+}
+
+function setupMobileMapToggle() {
+  mapExpandToggle.addEventListener("click", () => {
+    const wasExpanded = isMapExpanded;
+    isMapExpanded = !isMapExpanded;
+    updateMobileMapState({ fitBounds: true });
+    if (wasExpanded && !isMapExpanded) {
+      mapPanel.scrollIntoView({ block: "start" });
+    }
+  });
+
+  const onMobileStateChange = () => {
+    if (!mobileMapQuery.matches) {
+      isMapExpanded = false;
+    }
+    updateMobileMapState({ fitBounds: true });
+  };
+
+  if (typeof mobileMapQuery.addEventListener === "function") {
+    mobileMapQuery.addEventListener("change", onMobileStateChange);
+  } else if (typeof mobileMapQuery.addListener === "function") {
+    mobileMapQuery.addListener(onMobileStateChange);
+  }
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && isMapExpanded) {
+      isMapExpanded = false;
+      updateMobileMapState({ fitBounds: true });
+    }
+  });
+
+  updateMobileMapState({ fitBounds: true });
 }
 
 function setupMapResizeHandling() {
@@ -367,7 +724,7 @@ function setupMarkers() {
     }).bindPopup(popupHtml(place));
 
     marker.on("click", () => {
-      selectPlace(place, { openPopup: true });
+      selectPlace(place, { openPopup: !shouldUseBottomSheet() });
     });
 
     markersByPlace.set(place.id, marker);
@@ -398,10 +755,7 @@ async function init() {
     zoomControl: false,
     preferCanvas: true,
   }).setView(MELBOURNE_CENTER, 12);
-
-  L.control.zoom({
-    position: "bottomright",
-  }).addTo(map);
+  map.attributionControl.setPrefix(false);
 
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
     fadeAnimation: false,
@@ -414,6 +768,7 @@ async function init() {
 
   markerLayer.addTo(map);
   setupMapResizeHandling();
+  setupMobileMapToggle();
 
   places = await loadPlaces();
   setupMarkers();
