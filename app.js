@@ -67,6 +67,8 @@ const placeList = document.querySelector("#placeList");
 const resultCount = document.querySelector("#resultCount");
 const searchInput = document.querySelector("#search");
 const selectedPlace = document.querySelector("#selectedPlace");
+const selectedPlaceDefaultParent = selectedPlace.parentElement;
+const selectedPlaceDefaultNextSibling = selectedPlace.nextSibling;
 const filterButtons = [...document.querySelectorAll(".filter-button")];
 const searchClearButtons = [...document.querySelectorAll("[data-clear-search]")];
 const mapElement = document.querySelector("#map");
@@ -460,6 +462,33 @@ function renderSelectedPlace(place) {
   }
 }
 
+function restoreSelectedPlacePosition() {
+  selectedPlaceDefaultParent.insertBefore(selectedPlace, selectedPlaceDefaultNextSibling);
+  placeList.querySelectorAll(".selected-place-inline").forEach((slot) => slot.remove());
+}
+
+function positionSelectedPlace(selectedPlaceInView) {
+  if (!mobileMapQuery.matches || isMapExpanded || !selectedPlaceInView) {
+    restoreSelectedPlacePosition();
+    return;
+  }
+
+  const selectedCard = placeList.querySelector(".place-card.selected");
+  if (!selectedCard) {
+    restoreSelectedPlacePosition();
+    return;
+  }
+
+  let inlineSlot = placeList.querySelector(".selected-place-inline");
+  if (!inlineSlot) {
+    inlineSlot = document.createElement("li");
+    inlineSlot.className = "selected-place-inline";
+  }
+
+  selectedCard.after(inlineSlot);
+  inlineSlot.append(selectedPlace);
+}
+
 function renderMarkers(filteredPlaces) {
   markerLayer.clearLayers();
 
@@ -480,6 +509,7 @@ function renderList(filteredPlaces) {
     const location = getLocationParts(place.address);
     const item = document.createElement("li");
     item.className = "place-card";
+    item.dataset.placeId = place.id;
     item.classList.toggle("selected", place.id === selectedPlaceId);
 
     const button = document.createElement("button");
@@ -567,6 +597,7 @@ function render({ fitBounds = false } = {}) {
   updateResultCount(filteredPlaces);
   updateFilterButtons();
   renderSelectedPlace(selectedPlaceInView || places.find((place) => place.id === selectedPlaceId));
+  positionSelectedPlace(selectedPlaceInView);
 
   refreshMapLayout({ fitBounds });
 }
@@ -685,6 +716,7 @@ function updateMobileMapState({ fitBounds = false } = {}) {
     document.body.style.overflow = "";
   }
 
+  positionSelectedPlace(getFilteredPlaces().find((place) => place.id === selectedPlaceId));
   setMapInteractivity(true);
   refreshMapLayout({ fitBounds });
 }

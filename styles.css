@@ -884,6 +884,12 @@ h1 {
   scrollbar-color: rgba(201, 129, 214, 0.34) transparent;
 }
 
+.selected-place-inline {
+  margin: -3px 0 2px;
+  padding: 0;
+  list-style: none;
+}
+
 .place-card {
   --card-y: 0px;
   border: 1px solid rgba(226, 232, 240, 0.86);
