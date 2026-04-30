@@ -644,6 +644,7 @@ h1 {
   place-items: center;
   border: 1px solid rgba(226, 232, 240, 0.95);
   border-radius: 999px;
+  padding: 0;
   color: #64748B;
   background: rgba(255, 255, 255, 0.78);
   box-shadow: 0 8px 18px -14px rgba(30, 41, 59, 0.26);
@@ -1028,10 +1029,13 @@ h1 {
 }
 
 .leaflet-popup a.leaflet-popup-close-button::before {
+  display: block;
   width: 18px;
   height: 18px;
+  margin: auto;
   content: "";
   background: url("./assets/icons/x-closeicon.svg") center / contain no-repeat;
+  transform: translateY(0);
 }
 
 .leaflet-popup a.leaflet-popup-close-button:hover {
