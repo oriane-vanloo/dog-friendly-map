@@ -1,4 +1,5 @@
 const MELBOURNE_CENTER = [-37.8108, 144.9631];
+const STAY22_BASE_URL = "https://booking.stay22.com/bringyourdog/Nh7kEcUWC5";
 
 const categoryMeta = {
   Cafe: {
@@ -165,6 +166,32 @@ function getLocationParts(address) {
 
 function googleMapsUrl(place) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name}, ${place.address}`)}`;
+}
+
+function buildStay22Url(place) {
+  const url = new URL(STAY22_BASE_URL);
+  const lat = Number(place?.lat);
+  const lng = Number(place?.lng);
+  const addressParts = [place?.name, place?.address].filter(Boolean);
+
+  url.searchParams.set("campaign", "map_get_there");
+
+  if (Number.isFinite(lat) && Number.isFinite(lng)) {
+    url.searchParams.set("lat", String(lat));
+    url.searchParams.set("lng", String(lng));
+  } else if (addressParts.length) {
+    url.searchParams.set("address", addressParts.join(", "));
+  }
+
+  return url.toString();
+}
+
+function openExternal(url) {
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function findPlaceById(placeId) {
+  return places.find((place) => place.id === placeId);
 }
 
 function manualPhotoKey(place) {
@@ -410,7 +437,7 @@ function popupHtml(place) {
       <h2>${escapeHtml(place.name)}</h2>
       <p>${escapeHtml(place.description)}</p>
       <p><span class="address-label">Address</span>${escapeHtml(location.displayAddress)}</p>
-      <a class="get-there" href="${googleMapsUrl(place)}" target="_blank" rel="noopener noreferrer">Get there</a>
+      <a class="get-there" href="${googleMapsUrl(place)}" data-place-id="${escapeHtml(place.id)}" target="_blank" rel="noopener noreferrer">Get there</a>
     </article>
   `;
 }
@@ -446,7 +473,7 @@ function renderSelectedPlace(place) {
       <strong>Address</strong>
       ${escapeHtml(location.displayAddress)}
     </p>
-    <a class="get-there" href="${googleMapsUrl(place)}" target="_blank" rel="noopener noreferrer">Get there</a>
+    <a class="get-there" href="${googleMapsUrl(place)}" data-place-id="${escapeHtml(place.id)}" target="_blank" rel="noopener noreferrer">Get there</a>
   `;
 
   selectedPlace.querySelector(".detail-close").addEventListener("click", () => {
@@ -740,6 +767,29 @@ function setupFilters() {
   updateSearchClearButtons();
 }
 
+function setupGetThereLinks() {
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) {
+      return;
+    }
+
+    const link = event.target.closest(".get-there");
+    if (!link) {
+      return;
+    }
+
+    const place = findPlaceById(link.dataset.placeId) || findPlaceById(selectedPlaceId);
+    const directionsUrl = link.href || (place ? googleMapsUrl(place) : "");
+
+    event.preventDefault();
+
+    if (directionsUrl) {
+      openExternal(directionsUrl);
+    }
+    openExternal(buildStay22Url(place));
+  });
+}
+
 function setupMobileMapToggle() {
   mapExpandToggle.addEventListener("click", () => {
     const wasExpanded = isMapExpanded;
@@ -874,6 +924,7 @@ async function init() {
   markerLayer.addTo(map);
   setupMapResizeHandling();
   setupMobileMapToggle();
+  setupGetThereLinks();
 
   places = await loadPlaces();
   setupMarkers();
