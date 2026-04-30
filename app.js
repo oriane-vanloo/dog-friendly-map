@@ -601,7 +601,7 @@ function render({ fitBounds = false } = {}) {
 }
 
 function shouldUseBottomSheet() {
-  return mobileMapQuery.matches && isMapExpanded;
+  return mobileMapQuery.matches;
 }
 
 function selectPlace(place, { openPopup = false, pan = false } = {}) {
