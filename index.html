@@ -37,6 +37,9 @@
         <div class="search-wrap">
           <label for="search">Search places</label>
           <input id="search" type="search" placeholder="Search by name, suburb, or feature">
+          <button class="search-clear" type="button" aria-label="Clear search" data-clear-search hidden>
+            <img src="./assets/icons/eraseicon.svg" alt="">
+          </button>
         </div>
 
         <section id="selectedPlace" class="selected-place" aria-live="polite">
@@ -74,12 +77,15 @@
         </button>
         <div class="expanded-map-toolbar" aria-label="Expanded map controls">
           <button id="expandedMapHome" class="expanded-home-button" type="button" aria-label="Back to main screen">
-            <img src="./assets/logo.png" alt="">
+            <img class="brand-logo" src="./assets/logo.png" alt="">
           </button>
           <div class="expanded-search-wrap">
             <img src="./assets/icons/searchicon.svg" alt="">
             <label class="sr-only" for="expandedSearch">Search places</label>
             <input id="expandedSearch" type="search" placeholder="Search places" autocomplete="off">
+            <button class="search-clear" type="button" aria-label="Clear search" data-clear-search hidden>
+              <img src="./assets/icons/eraseicon.svg" alt="">
+            </button>
           </div>
           <button id="expandedFilterToggle" class="expanded-filter-button" type="button" aria-expanded="false" aria-controls="expandedFilterSheet" aria-label="Filter categories">
             <img src="./assets/icons/filtericon.svg" alt="">

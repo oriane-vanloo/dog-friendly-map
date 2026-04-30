@@ -68,6 +68,7 @@ const resultCount = document.querySelector("#resultCount");
 const searchInput = document.querySelector("#search");
 const selectedPlace = document.querySelector("#selectedPlace");
 const filterButtons = [...document.querySelectorAll(".filter-button")];
+const searchClearButtons = [...document.querySelectorAll("[data-clear-search]")];
 const mapElement = document.querySelector("#map");
 const mapPanel = document.querySelector(".map-panel");
 const mapExpandToggle = document.querySelector("#mapExpandToggle");
@@ -628,6 +629,16 @@ function syncSearchInputs(sourceInput) {
   if (expandedSearchInput && expandedSearchInput !== sourceInput) {
     expandedSearchInput.value = nextValue;
   }
+
+  updateSearchClearButtons();
+}
+
+function updateSearchClearButtons() {
+  const hasSearchValue = searchInput.value.length > 0;
+
+  searchClearButtons.forEach((button) => {
+    button.hidden = !hasSearchValue;
+  });
 }
 
 function setExpandedFilterSheet(open) {
@@ -654,6 +665,7 @@ function updateMobileMapState({ fitBounds = false } = {}) {
   if (expandedSearchInput) {
     expandedSearchInput.value = searchInput.value;
   }
+  updateSearchClearButtons();
 
   if (!shouldExpandMap) {
     setExpandedFilterSheet(false);
@@ -707,6 +719,25 @@ function setupFilters() {
   if (expandedSearchInput) {
     expandedSearchInput.addEventListener("input", handleSearchInput);
   }
+
+  searchClearButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      searchInput.value = "";
+      if (expandedSearchInput) {
+        expandedSearchInput.value = "";
+      }
+
+      updateSearchClearButtons();
+      render({ fitBounds: true });
+
+      const inputToFocus = button.closest(".expanded-search-wrap")
+        ? expandedSearchInput
+        : searchInput;
+      inputToFocus?.focus();
+    });
+  });
+
+  updateSearchClearButtons();
 }
 
 function setupMobileMapToggle() {
