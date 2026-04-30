@@ -68,6 +68,11 @@ const resultCount = document.querySelector("#resultCount");
 const searchInput = document.querySelector("#search");
 const selectedPlace = document.querySelector("#selectedPlace");
 const filterButtons = [...document.querySelectorAll(".filter-button")];
+const mapElement = document.querySelector("#map");
+const mapPanel = document.querySelector(".map-panel");
+
+let mapRefreshFrame = null;
+let shouldFitBoundsOnRefresh = false;
 
 function escapeHtml(value) {
   return String(value)
@@ -253,6 +258,29 @@ function fitFilteredBounds(filteredPlaces) {
   });
 }
 
+function refreshMapLayout({ fitBounds = false } = {}) {
+  if (!map) {
+    return;
+  }
+
+  shouldFitBoundsOnRefresh = shouldFitBoundsOnRefresh || fitBounds;
+
+  if (mapRefreshFrame) {
+    return;
+  }
+
+  mapRefreshFrame = window.requestAnimationFrame(() => {
+    mapRefreshFrame = null;
+    map.invalidateSize({ pan: false });
+
+    if (shouldFitBoundsOnRefresh) {
+      shouldFitBoundsOnRefresh = false;
+      fitFilteredBounds(getFilteredPlaces());
+      window.requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+    }
+  });
+}
+
 function render({ fitBounds = false } = {}) {
   const filteredPlaces = getFilteredPlaces();
   const selectedPlaceInView = filteredPlaces.find((place) => place.id === selectedPlaceId);
@@ -262,9 +290,7 @@ function render({ fitBounds = false } = {}) {
   updateFilterButtons();
   renderSelectedPlace(selectedPlaceInView || places.find((place) => place.id === selectedPlaceId));
 
-  if (fitBounds) {
-    fitFilteredBounds(filteredPlaces);
-  }
+  refreshMapLayout({ fitBounds });
 }
 
 function selectPlace(place, { openPopup = false, pan = false } = {}) {
@@ -310,6 +336,26 @@ function setupFilters() {
   searchInput.addEventListener("input", () => render({ fitBounds: true }));
 }
 
+function setupMapResizeHandling() {
+  const refresh = () => refreshMapLayout();
+
+  window.addEventListener("load", refresh);
+  window.addEventListener("resize", refresh);
+  window.addEventListener("orientationchange", refresh);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(refresh).catch(() => {});
+  }
+
+  if ("ResizeObserver" in window) {
+    const resizeObserver = new ResizeObserver(refresh);
+    resizeObserver.observe(mapElement);
+    resizeObserver.observe(mapPanel);
+  }
+
+  refresh();
+}
+
 function setupMarkers() {
   places.forEach((place, index) => {
     place.id = `${place.name}-${place.address}-${index}`;
@@ -348,6 +394,7 @@ async function loadPlaces() {
 
 async function init() {
   map = L.map("map", {
+    fadeAnimation: false,
     zoomControl: false,
     preferCanvas: true,
   }).setView(MELBOURNE_CENTER, 12);
@@ -357,18 +404,24 @@ async function init() {
   }).addTo(map);
 
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    fadeAnimation: false,
     maxZoom: 19,
-    keepBuffer: 1,
-    updateWhenIdle: true,
+    keepBuffer: 4,
+    updateWhenIdle: false,
+    updateWhenZooming: false,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
   }).addTo(map);
 
   markerLayer.addTo(map);
+  setupMapResizeHandling();
 
   places = await loadPlaces();
   setupMarkers();
   setupFilters();
   render({ fitBounds: true });
+  [60, 180, 420, 900].forEach((delay) => {
+    window.setTimeout(() => refreshMapLayout({ fitBounds: true }), delay);
+  });
 }
 
 init().catch((error) => {

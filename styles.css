@@ -83,13 +83,16 @@ input:focus-visible {
 
 .map-panel {
   position: relative;
+  display: flex;
+  min-height: 0;
   min-width: 0;
   padding: 18px 18px 18px 0;
 }
 
 #map {
+  flex: 1 1 auto;
   width: 100%;
-  height: 100%;
+  min-height: 0;
   overflow: hidden;
   border: 1px solid rgba(226, 232, 240, 0.92);
   border-radius: 40px;
@@ -98,7 +101,101 @@ input:focus-visible {
 }
 
 .leaflet-container {
+  position: relative;
+  overflow: hidden;
   font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  outline: 0;
+  touch-action: pan-x pan-y;
+}
+
+.leaflet-pane,
+.leaflet-map-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+}
+
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.leaflet-tile-pane {
+  z-index: 200;
+}
+
+.leaflet-overlay-pane {
+  z-index: 400;
+}
+
+.leaflet-shadow-pane {
+  z-index: 500;
+}
+
+.leaflet-marker-pane {
+  z-index: 650;
+}
+
+.leaflet-tooltip-pane {
+  z-index: 660;
+}
+
+.leaflet-popup-pane {
+  z-index: 700;
+}
+
+.leaflet-control {
+  position: relative;
+  z-index: 800;
+  pointer-events: auto;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  position: absolute;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.leaflet-top {
+  top: 0;
+}
+
+.leaflet-right {
+  right: 0;
+}
+
+.leaflet-bottom {
+  bottom: 0;
+}
+
+.leaflet-left {
+  left: 0;
+}
+
+.leaflet-control-zoom {
+  display: grid;
+}
+
+.leaflet-tile,
+.leaflet-tile-loaded,
+.leaflet-marker-icon {
+  opacity: 1 !important;
+}
+
+.category-marker {
+  display: block;
 }
 
 .sidebar {
@@ -449,11 +546,11 @@ h1 {
 .get-there {
   display: inline-flex;
   width: fit-content;
-  min-height: 44px;
+  min-height: 36px;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  padding: 11px 18px;
+  padding: 7px 16px;
   color: var(--accent-fg);
   background: var(--button);
   box-shadow: 0 14px 24px rgba(30, 41, 59, 0.08);
