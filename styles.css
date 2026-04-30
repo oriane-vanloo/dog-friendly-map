@@ -446,6 +446,7 @@ h1 {
 }
 
 .expanded-filter-button {
+  position: relative;
   display: grid;
   width: 52px;
   height: 52px;
@@ -456,6 +457,29 @@ h1 {
   box-shadow: 0 14px 32px -18px rgba(30, 41, 59, 0.35);
   cursor: pointer;
   backdrop-filter: blur(12px);
+}
+
+.filter-count-badge {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  display: grid;
+  min-width: 16px;
+  height: 16px;
+  place-items: center;
+  border: 2px solid #FFFFFF;
+  border-radius: 999px;
+  padding: 0 4px;
+  color: #1E293B;
+  background: #FF9BAB;
+  box-shadow: 0 8px 16px -10px rgba(30, 41, 59, 0.38);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.filter-count-badge[hidden] {
+  display: none;
 }
 
 .expanded-home-button {
@@ -1189,17 +1213,7 @@ h1 {
   }
 
   .map-overlay {
-    top: 22px;
-    right: 18px;
-    left: 18px;
-    display: flex;
-    width: auto;
-    max-width: none;
-    flex-wrap: wrap;
-    gap: 8px;
-    overflow: visible;
-    padding: 0;
-    white-space: normal;
+    display: none;
   }
 
   .map-panel.is-expanded .map-overlay {

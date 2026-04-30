@@ -77,6 +77,7 @@ const mapExpandToggle = document.querySelector("#mapExpandToggle");
 const expandedMapHome = document.querySelector("#expandedMapHome");
 const expandedSearchInput = document.querySelector("#expandedSearch");
 const expandedFilterToggle = document.querySelector("#expandedFilterToggle");
+const expandedFilterBadge = document.querySelector("#expandedFilterBadge");
 const expandedFilterSheet = document.querySelector("#expandedFilterSheet");
 const appConfig = {
   googleMapsApiKey: "",
@@ -541,15 +542,29 @@ function updateResultCount(filteredPlaces) {
 }
 
 function updateFilterButtons() {
+  const categoryCount = Object.keys(categoryMeta).length;
+
   filterButtons.forEach((button) => {
     const category = button.dataset.category;
     const isActive = category === "all"
-      ? activeCategories.size === Object.keys(categoryMeta).length
+      ? activeCategories.size === categoryCount
       : activeCategories.has(category);
 
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   });
+
+  if (expandedFilterBadge && expandedFilterToggle) {
+    const hasAppliedFilters = activeCategories.size !== categoryCount;
+    expandedFilterBadge.hidden = !hasAppliedFilters;
+    expandedFilterBadge.textContent = hasAppliedFilters ? String(activeCategories.size) : "";
+    expandedFilterToggle.setAttribute(
+      "aria-label",
+      hasAppliedFilters
+        ? `Filter categories, ${activeCategories.size} ${activeCategories.size === 1 ? "category" : "categories"} active`
+        : "Filter categories"
+    );
+  }
 }
 
 function fitFilteredBounds(filteredPlaces) {
