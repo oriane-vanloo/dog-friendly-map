@@ -883,19 +883,6 @@ h1 {
   scrollbar-color: rgba(201, 129, 214, 0.34) transparent;
 }
 
-.site-footer {
-  display: grid;
-}
-
-.affiliate-disclosure {
-  max-width: 34ch;
-  margin: -6px 0 0;
-  color: rgba(100, 116, 139, 0.86);
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.45;
-}
-
 .toast {
   position: fixed;
   z-index: 2200;
