@@ -84,6 +84,15 @@ input:focus-visible {
   outline-offset: 3px;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 420px minmax(0, 1fr);
@@ -96,7 +105,7 @@ input:focus-visible {
   display: flex;
   min-height: 0;
   min-width: 0;
-  padding: 18px 18px 18px 0;
+  padding: 0;
 }
 
 #map {
@@ -104,9 +113,9 @@ input:focus-visible {
   width: 100%;
   min-height: 0;
   overflow: hidden;
-  border: 1px solid rgba(226, 232, 240, 0.92);
-  border-radius: 40px;
-  box-shadow: var(--shadow-large);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
   background: var(--soft-surface);
 }
 
@@ -271,10 +280,10 @@ input:focus-visible {
 }
 
 h1 {
-  max-width: 10ch;
+  max-width: none;
   margin: 0;
   color: var(--foreground);
-  font-size: clamp(38px, 5vw, 58px);
+  font-size: clamp(38px, 5vw, 54px);
   font-weight: 700;
   line-height: 0.9;
   letter-spacing: 0;
@@ -353,10 +362,10 @@ h1 {
 .map-overlay {
   position: absolute;
   z-index: 500;
-  top: 34px;
-  left: 18px;
+  top: 24px;
+  left: 24px;
   width: max-content;
-  max-width: calc(100% - 36px);
+  max-width: calc(100% - 48px);
 }
 
 .map-expand-toggle {
@@ -389,6 +398,93 @@ h1 {
 .map-expand-symbol img {
   width: 20px;
   height: 20px;
+}
+
+.expanded-map-toolbar,
+.expanded-filter-sheet {
+  display: none;
+}
+
+.expanded-home-button,
+.expanded-filter-button {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 32px -18px rgba(30, 41, 59, 0.35);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+
+.expanded-home-button img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+
+.expanded-filter-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.expanded-search-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.expanded-search-wrap > img {
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  width: 22px;
+  height: 22px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.expanded-search-wrap input {
+  width: 100%;
+  min-height: 58px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  padding: 14px 18px 14px 52px;
+  color: var(--foreground);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 34px -22px rgba(30, 41, 59, 0.42);
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.expanded-search-wrap input::placeholder {
+  color: rgba(26, 26, 26, 0.62);
+}
+
+.filter-sheet-card {
+  border: 1px solid rgba(226, 232, 240, 0.84);
+  border-radius: 0 0 28px 28px;
+  padding: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 245, 0.98), rgba(255, 255, 255, 0.94));
+  box-shadow: 0 24px 52px -26px rgba(30, 41, 59, 0.32);
+  backdrop-filter: blur(16px);
+}
+
+.filter-sheet-card h2 {
+  margin: 0 0 14px;
+  color: var(--foreground);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.sheet-category-filters {
+  flex-wrap: wrap;
+  overflow: visible;
+  padding: 0;
+  white-space: normal;
 }
 
 .filter-button {
@@ -1008,10 +1104,47 @@ h1 {
   }
 
   .map-panel.is-expanded .map-overlay {
+    display: none;
+  }
+
+  .map-panel.is-expanded .expanded-map-toolbar {
     position: fixed;
+    z-index: 1950;
     top: calc(env(safe-area-inset-top, 0px) + 14px);
-    right: 70px;
+    right: 16px;
     left: 16px;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) 52px;
+    gap: 12px;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .map-panel.is-expanded .expanded-map-toolbar > * {
+    pointer-events: auto;
+  }
+
+  .map-panel.is-expanded.filter-sheet-open .expanded-filter-sheet {
+    position: fixed;
+    z-index: 1930;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: block;
+    max-height: 50svh;
+    overflow-y: auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 88px) 16px 0;
+    pointer-events: none;
+  }
+
+  .map-panel.is-expanded.filter-sheet-open .filter-sheet-card {
+    pointer-events: auto;
+  }
+
+  .map-panel.is-expanded .sheet-category-filters .filter-button {
+    min-height: 44px;
+    padding: 8px 12px 8px 9px;
+    font-size: 14px;
   }
 
   .filter-button {
@@ -1040,13 +1173,7 @@ h1 {
   }
 
   .map-panel.is-expanded .map-expand-toggle {
-    position: fixed;
-    top: calc(env(safe-area-inset-top, 0px) + 14px);
-    right: 14px;
-    bottom: auto;
-    width: 42px;
-    height: 42px;
-    font-size: 28px;
+    display: none;
   }
 
   .leaflet-control-attribution {

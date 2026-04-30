@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dog-Friendly Melbourne Map</title>
+    <title>Bring Your Dog</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -25,7 +25,7 @@
           <div class="brand-lockup">
             <img class="brand-logo" src="./assets/logo.png" alt="">
             <div class="brand-copy">
-              <h1>Dog-Friendly Map</h1>
+              <h1>Bring Your Dog</h1>
             </div>
           </div>
           <div class="header-meta">
@@ -47,10 +47,10 @@
           <span id="resultCount">Loading places...</span>
         </div>
 
-        <ol id="placeList" class="place-list" aria-label="Dog-friendly places"></ol>
+        <ol id="placeList" class="place-list" aria-label="Bring Your Dog places"></ol>
       </aside>
 
-      <section class="map-panel" aria-label="Dog-friendly Melbourne map">
+      <section class="map-panel" aria-label="Bring Your Dog Melbourne map">
         <div class="category-filters map-overlay" aria-label="Category filters">
           <button class="filter-button active" data-category="Cafe" type="button">
             <span class="filter-checkbox" aria-hidden="true"></span>
@@ -72,6 +72,42 @@
         <button id="mapExpandToggle" class="map-expand-toggle" type="button" aria-expanded="false" aria-label="Expand map">
           <span class="map-expand-symbol" aria-hidden="true"><img src="./assets/icons/expandicon.svg" alt=""></span>
         </button>
+        <div class="expanded-map-toolbar" aria-label="Expanded map controls">
+          <button id="expandedMapHome" class="expanded-home-button" type="button" aria-label="Back to main screen">
+            <img src="./assets/logo.png" alt="">
+          </button>
+          <div class="expanded-search-wrap">
+            <img src="./assets/icons/searchicon.svg" alt="">
+            <label class="sr-only" for="expandedSearch">Search places</label>
+            <input id="expandedSearch" type="search" placeholder="Search places" autocomplete="off">
+          </div>
+          <button id="expandedFilterToggle" class="expanded-filter-button" type="button" aria-expanded="false" aria-controls="expandedFilterSheet" aria-label="Filter categories">
+            <img src="./assets/icons/filtericon.svg" alt="">
+          </button>
+        </div>
+        <div id="expandedFilterSheet" class="expanded-filter-sheet" hidden>
+          <div class="filter-sheet-card" role="dialog" aria-label="Filter categories">
+            <h2>Filter places</h2>
+            <div class="sheet-category-filters category-filters" aria-label="Expanded category filters">
+              <button class="filter-button active" data-category="Cafe" type="button">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <img src="./assets/icons/cafe-marker.png" alt=""> Cafe
+              </button>
+              <button class="filter-button active" data-category="Pub/Bar" type="button">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <img src="./assets/icons/pub-marker.png" alt=""> Pub/Bar
+              </button>
+              <button class="filter-button active" data-category="Park" type="button">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <img src="./assets/icons/park-marker.png" alt=""> Park
+              </button>
+              <button class="filter-button active" data-category="Shop" type="button">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <img src="./assets/icons/shop-marker.png" alt=""> Shop
+              </button>
+            </div>
+          </div>
+        </div>
         <div id="map"></div>
       </section>
     </main>

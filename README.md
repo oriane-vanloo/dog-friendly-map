@@ -1,8 +1,8 @@
-# Dog-Friendly Melbourne Leaflet Map
+# Bring Your Dog
 
 Static Leaflet map for the dog-friendly venue dataset.
 
-The app is a plain static site: `index.html`, `styles.css`, `app.js`, and local data/assets.
+Live site: https://oriane-vanloo.github.io/bringyourdog/
 
 ## Run
 
@@ -19,9 +19,8 @@ http://127.0.0.1:8765/
 ## Data
 
 - `data/locations.csv` is the merged editable source file.
-- `data/locations.json` is the canonical JSON data.
-- `data/locations.js` mirrors the JSON for `file://` usage.
-- `assets/icons/*-marker.png` are the category marker icons.
+- `data/locations.json` is loaded by the map.
+- `assets/icons/*.png` are the category marker icons.
 
 ## Photos
 

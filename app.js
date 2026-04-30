@@ -71,6 +71,10 @@ const filterButtons = [...document.querySelectorAll(".filter-button")];
 const mapElement = document.querySelector("#map");
 const mapPanel = document.querySelector(".map-panel");
 const mapExpandToggle = document.querySelector("#mapExpandToggle");
+const expandedMapHome = document.querySelector("#expandedMapHome");
+const expandedSearchInput = document.querySelector("#expandedSearch");
+const expandedFilterToggle = document.querySelector("#expandedFilterToggle");
+const expandedFilterSheet = document.querySelector("#expandedFilterSheet");
 const appConfig = {
   googleMapsApiKey: "",
   useGooglePlacePhotos: true,
@@ -87,6 +91,7 @@ let shouldFitBoundsOnRefresh = false;
 let googleMapsScriptPromise = null;
 let placesLibraryPromise = null;
 let isMapExpanded = false;
+let isExpandedFilterSheetOpen = false;
 const mobileMapQuery = window.matchMedia("(max-width: 860px)");
 
 function escapeHtml(value) {
@@ -614,12 +619,48 @@ function setMapInteractivity(enabled) {
   }
 }
 
+function syncSearchInputs(sourceInput) {
+  const nextValue = sourceInput.value;
+
+  if (searchInput !== sourceInput) {
+    searchInput.value = nextValue;
+  }
+  if (expandedSearchInput && expandedSearchInput !== sourceInput) {
+    expandedSearchInput.value = nextValue;
+  }
+}
+
+function setExpandedFilterSheet(open) {
+  const shouldOpen = Boolean(open) && mobileMapQuery.matches && isMapExpanded;
+
+  isExpandedFilterSheetOpen = shouldOpen;
+  mapPanel.classList.toggle("filter-sheet-open", shouldOpen);
+
+  if (expandedFilterToggle) {
+    expandedFilterToggle.setAttribute("aria-expanded", String(shouldOpen));
+  }
+  if (expandedFilterSheet) {
+    expandedFilterSheet.hidden = !shouldOpen;
+  }
+}
+
 function updateMobileMapState({ fitBounds = false } = {}) {
   const isMobile = mobileMapQuery.matches;
   const shouldExpandMap = isMobile && isMapExpanded;
 
   mapPanel.classList.toggle("is-expanded", shouldExpandMap);
   document.body.classList.toggle("map-expanded", shouldExpandMap);
+
+  if (expandedSearchInput) {
+    expandedSearchInput.value = searchInput.value;
+  }
+
+  if (!shouldExpandMap) {
+    setExpandedFilterSheet(false);
+  } else {
+    setExpandedFilterSheet(isExpandedFilterSheetOpen);
+  }
+
   mapExpandToggle.hidden = !isMobile;
   mapExpandToggle.setAttribute("aria-expanded", String(shouldExpandMap));
   mapExpandToggle.setAttribute("aria-label", shouldExpandMap ? "Collapse map" : "Expand map");
@@ -657,7 +698,15 @@ function setupFilters() {
     });
   });
 
-  searchInput.addEventListener("input", () => render({ fitBounds: true }));
+  const handleSearchInput = (event) => {
+    syncSearchInputs(event.currentTarget);
+    render({ fitBounds: true });
+  };
+
+  searchInput.addEventListener("input", handleSearchInput);
+  if (expandedSearchInput) {
+    expandedSearchInput.addEventListener("input", handleSearchInput);
+  }
 }
 
 function setupMobileMapToggle() {
@@ -670,9 +719,25 @@ function setupMobileMapToggle() {
     }
   });
 
+  if (expandedMapHome) {
+    expandedMapHome.addEventListener("click", () => {
+      isMapExpanded = false;
+      setExpandedFilterSheet(false);
+      updateMobileMapState({ fitBounds: true });
+      mapPanel.scrollIntoView({ block: "start" });
+    });
+  }
+
+  if (expandedFilterToggle) {
+    expandedFilterToggle.addEventListener("click", () => {
+      setExpandedFilterSheet(!isExpandedFilterSheetOpen);
+    });
+  }
+
   const onMobileStateChange = () => {
     if (!mobileMapQuery.matches) {
       isMapExpanded = false;
+      setExpandedFilterSheet(false);
     }
     updateMobileMapState({ fitBounds: true });
   };
@@ -684,7 +749,16 @@ function setupMobileMapToggle() {
   }
 
   window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && isMapExpanded) {
+    if (event.key !== "Escape") {
+      return;
+    }
+
+    if (isExpandedFilterSheetOpen) {
+      setExpandedFilterSheet(false);
+      return;
+    }
+
+    if (isMapExpanded) {
       isMapExpanded = false;
       updateMobileMapState({ fitBounds: true });
     }
