@@ -77,6 +77,7 @@ const expandedMapHome = document.querySelector("#expandedMapHome");
 const expandedSearchInput = document.querySelector("#expandedSearch");
 const expandedFilterToggle = document.querySelector("#expandedFilterToggle");
 const expandedFilterSheet = document.querySelector("#expandedFilterSheet");
+const toast = document.querySelector("#toast");
 const appConfig = {
   googleMapsApiKey: "",
   useGooglePlacePhotos: true,
@@ -94,6 +95,7 @@ let googleMapsScriptPromise = null;
 let placesLibraryPromise = null;
 let isMapExpanded = false;
 let isExpandedFilterSheetOpen = false;
+let toastTimer = null;
 const mobileMapQuery = window.matchMedia("(max-width: 860px)");
 
 function escapeHtml(value) {
@@ -172,22 +174,22 @@ function buildStay22Url(place) {
   const url = new URL(STAY22_BASE_URL);
   const lat = Number(place?.lat);
   const lng = Number(place?.lng);
-  const addressParts = [place?.name, place?.address].filter(Boolean);
+  const address = place?.address || place?.name;
 
-  url.searchParams.set("campaign", "map_get_there");
+  url.searchParams.set("campaign", "get_there_primary");
 
   if (Number.isFinite(lat) && Number.isFinite(lng)) {
     url.searchParams.set("lat", String(lat));
     url.searchParams.set("lng", String(lng));
-  } else if (addressParts.length) {
-    url.searchParams.set("address", addressParts.join(", "));
+  } else if (address) {
+    url.searchParams.set("address", address);
   }
 
   return url.toString();
 }
 
 function openExternal(url) {
-  window.open(url, "_blank", "noopener,noreferrer");
+  return window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function findPlaceById(placeId) {
@@ -668,6 +670,22 @@ function updateSearchClearButtons() {
   });
 }
 
+function showToast(message) {
+  if (!toast) {
+    return;
+  }
+
+  window.clearTimeout(toastTimer);
+  toast.textContent = message;
+  toast.hidden = false;
+  toast.classList.add("is-visible");
+
+  toastTimer = window.setTimeout(() => {
+    toast.classList.remove("is-visible");
+    toast.hidden = true;
+  }, 2600);
+}
+
 function setExpandedFilterSheet(open) {
   const shouldOpen = Boolean(open) && mobileMapQuery.matches && isMapExpanded;
 
@@ -780,13 +798,15 @@ function setupGetThereLinks() {
 
     const place = findPlaceById(link.dataset.placeId) || findPlaceById(selectedPlaceId);
     const directionsUrl = link.href || (place ? googleMapsUrl(place) : "");
+    const stay22Url = buildStay22Url(place);
 
     event.preventDefault();
 
+    openExternal(stay22Url);
     if (directionsUrl) {
       openExternal(directionsUrl);
     }
-    openExternal(buildStay22Url(place));
+    showToast("Opening nearby stays and directions 🐾");
   });
 }
 
