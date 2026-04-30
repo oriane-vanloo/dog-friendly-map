@@ -804,6 +804,14 @@ function setupGetThereLinks() {
 
     openExternal(stay22Url);
     if (directionsUrl) {
+      if (mobileMapQuery.matches) {
+        showToast("Opening nearby stays and directions 🐾");
+        window.setTimeout(() => {
+          window.location.assign(directionsUrl);
+        }, 150);
+        return;
+      }
+
       openExternal(directionsUrl);
     }
     showToast("Opening nearby stays and directions 🐾");
