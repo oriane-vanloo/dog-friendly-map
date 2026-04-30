@@ -1,5 +1,4 @@
 const MELBOURNE_CENTER = [-37.8108, 144.9631];
-const STAY22_BASE_URL = "https://booking.stay22.com/bringyourdog/Nh7kEcUWC5";
 
 const categoryMeta = {
   Cafe: {
@@ -77,7 +76,6 @@ const expandedMapHome = document.querySelector("#expandedMapHome");
 const expandedSearchInput = document.querySelector("#expandedSearch");
 const expandedFilterToggle = document.querySelector("#expandedFilterToggle");
 const expandedFilterSheet = document.querySelector("#expandedFilterSheet");
-const toast = document.querySelector("#toast");
 const appConfig = {
   googleMapsApiKey: "",
   useGooglePlacePhotos: true,
@@ -95,7 +93,6 @@ let googleMapsScriptPromise = null;
 let placesLibraryPromise = null;
 let isMapExpanded = false;
 let isExpandedFilterSheetOpen = false;
-let toastTimer = null;
 const mobileMapQuery = window.matchMedia("(max-width: 860px)");
 
 function escapeHtml(value) {
@@ -168,32 +165,6 @@ function getLocationParts(address) {
 
 function googleMapsUrl(place) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name}, ${place.address}`)}`;
-}
-
-function buildStay22Url(place) {
-  const url = new URL(STAY22_BASE_URL);
-  const lat = Number(place?.lat);
-  const lng = Number(place?.lng);
-  const address = place?.address || place?.name;
-
-  url.searchParams.set("campaign", "get_there_primary");
-
-  if (Number.isFinite(lat) && Number.isFinite(lng)) {
-    url.searchParams.set("lat", String(lat));
-    url.searchParams.set("lng", String(lng));
-  } else if (address) {
-    url.searchParams.set("address", address);
-  }
-
-  return url.toString();
-}
-
-function openExternal(url) {
-  return window.open(url, "_blank", "noopener,noreferrer");
-}
-
-function findPlaceById(placeId) {
-  return places.find((place) => place.id === placeId);
 }
 
 function manualPhotoKey(place) {
@@ -670,22 +641,6 @@ function updateSearchClearButtons() {
   });
 }
 
-function showToast(message) {
-  if (!toast) {
-    return;
-  }
-
-  window.clearTimeout(toastTimer);
-  toast.textContent = message;
-  toast.hidden = false;
-  toast.classList.add("is-visible");
-
-  toastTimer = window.setTimeout(() => {
-    toast.classList.remove("is-visible");
-    toast.hidden = true;
-  }, 2600);
-}
-
 function setExpandedFilterSheet(open) {
   const shouldOpen = Boolean(open) && mobileMapQuery.matches && isMapExpanded;
 
@@ -783,39 +738,6 @@ function setupFilters() {
   });
 
   updateSearchClearButtons();
-}
-
-function setupGetThereLinks() {
-  document.addEventListener("click", (event) => {
-    if (!(event.target instanceof Element)) {
-      return;
-    }
-
-    const link = event.target.closest(".get-there");
-    if (!link) {
-      return;
-    }
-
-    const place = findPlaceById(link.dataset.placeId) || findPlaceById(selectedPlaceId);
-    const directionsUrl = link.href || (place ? googleMapsUrl(place) : "");
-    const stay22Url = buildStay22Url(place);
-
-    event.preventDefault();
-
-    openExternal(stay22Url);
-    if (directionsUrl) {
-      if (mobileMapQuery.matches) {
-        showToast("Opening nearby stays and directions 🐾");
-        window.setTimeout(() => {
-          window.location.assign(directionsUrl);
-        }, 150);
-        return;
-      }
-
-      openExternal(directionsUrl);
-    }
-    showToast("Opening nearby stays and directions 🐾");
-  });
 }
 
 function setupMobileMapToggle() {
@@ -952,7 +874,6 @@ async function init() {
   markerLayer.addTo(map);
   setupMapResizeHandling();
   setupMobileMapToggle();
-  setupGetThereLinks();
 
   places = await loadPlaces();
   setupMarkers();
