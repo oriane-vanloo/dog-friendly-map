@@ -601,23 +601,21 @@ h1 {
 
 .filter-checkbox {
   display: grid;
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   flex: 0 0 auto;
   place-items: center;
-  border: 1.5px solid rgba(254, 155, 171, 0.9);
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #FDD6DC;
+  border-radius: 4px;
+  background: transparent;
 }
 
 .filter-checkbox::after {
-  width: 7px;
-  height: 4px;
-  border-bottom: 2px solid #ffffff;
-  border-left: 2px solid #ffffff;
+  width: 10px;
+  height: 8px;
+  background: url("./assets/icons/checkmarkicon.svg") center / contain no-repeat;
   content: "";
   opacity: 0;
-  transform: rotate(-45deg) translateY(-1px);
 }
 
 .filter-button.active {
@@ -627,8 +625,8 @@ h1 {
 }
 
 .filter-button.active .filter-checkbox {
-  border-color: var(--button-hover);
-  background: var(--button-hover);
+  border-color: #FF9BAB;
+  background: #FF9BAB;
 }
 
 .filter-button.active .filter-checkbox::after {
@@ -1279,8 +1277,6 @@ h1 {
   }
 
   .filter-checkbox {
-    width: 13px;
-    height: 13px;
     border-radius: 4px;
   }
 
