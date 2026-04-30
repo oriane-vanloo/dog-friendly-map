@@ -1000,6 +1000,7 @@ h1 {
 }
 
 .leaflet-popup-content-wrapper {
+  position: relative;
   border: 1px solid rgba(226, 232, 240, 0.94);
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.95);
@@ -1007,6 +1008,8 @@ h1 {
 }
 
 .leaflet-popup a.leaflet-popup-close-button {
+  position: absolute;
+  z-index: 3;
   top: 12px;
   right: 12px;
   display: grid;
