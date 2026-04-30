@@ -250,7 +250,7 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  border: 1px solid rgba(254, 155, 171, 0.58);
   border-radius: 999px;
   padding: 6px 10px 6px 8px;
   color: var(--foreground);
@@ -265,7 +265,7 @@ h1 {
 
 .filter-button:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 155, 171, 0.48);
+  border-color: rgba(209, 124, 137, 0.72);
   background: rgba(255, 255, 255, 0.86);
 }
 
@@ -282,7 +282,7 @@ h1 {
   height: 14px;
   flex: 0 0 auto;
   place-items: center;
-  border: 1.5px solid rgba(201, 129, 214, 0.62);
+  border: 1.5px solid rgba(254, 155, 171, 0.9);
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.92);
 }
@@ -299,7 +299,7 @@ h1 {
 
 .filter-button.active {
   color: var(--foreground);
-  border-color: rgba(201, 129, 214, 0.42);
+  border-color: rgba(209, 124, 137, 0.58);
   background: rgba(241, 245, 249, 0.94);
 }
 
