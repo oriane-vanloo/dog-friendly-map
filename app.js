@@ -1290,6 +1290,10 @@ function setupFilters() {
 
   const handleSearchInput = (event) => {
     syncSearchInputs(event.currentTarget);
+    if (!shouldUseBottomSheet() && selectedPlaceId && cleanSearchQuery(searchInput.value)) {
+      selectedPlaceId = null;
+      map.closePopup();
+    }
     render({ fitBounds: true });
     showSearchSuggestions(event.currentTarget);
     queueSearchTracking(event.currentTarget);
