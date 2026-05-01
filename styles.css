@@ -1093,19 +1093,12 @@ h1 {
 }
 
 .instagram-link-icon {
-  display: inline-block;
+  display: block;
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
-  background-color: currentColor;
-  -webkit-mask-image: url("./assets/icons/instagramicon.svg");
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  mask-image: url("./assets/icons/instagramicon.svg");
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: contain;
+  color: currentColor;
+  fill: currentColor;
 }
 
 .place-card {
