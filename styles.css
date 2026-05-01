@@ -1255,13 +1255,13 @@ h1 {
   z-index: 3;
   top: 12px;
   right: 12px;
-  display: grid;
+  display: block;
   width: 30px;
   height: 30px;
-  place-items: center;
   border: 1px solid rgba(226, 232, 240, 0.95);
   border-radius: 999px;
   padding: 0;
+  overflow: hidden;
   color: transparent !important;
   background: rgba(255, 255, 255, 0.78);
   box-shadow: 0 8px 18px -14px rgba(30, 41, 59, 0.26);
@@ -1271,13 +1271,16 @@ h1 {
 }
 
 .leaflet-popup a.leaflet-popup-close-button::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   display: block;
   width: 18px;
   height: 18px;
-  margin: auto;
+  margin: 0;
   content: "";
   background: url("./assets/icons/x-closeicon.svg") center / contain no-repeat;
-  transform: translateY(0);
+  transform: translate(-50%, -50%);
 }
 
 .leaflet-popup a.leaflet-popup-close-button:hover {
@@ -1299,6 +1302,13 @@ h1 {
   min-width: 240px;
   padding-right: 30px;
   color: var(--foreground);
+}
+
+.popup-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
 }
 
 .popup h2 {

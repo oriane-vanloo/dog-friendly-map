@@ -792,8 +792,10 @@ function popupHtml(place) {
 
   return `
     <article class="popup">
-      <span class="category ${categoryClass(place.category)}">${escapeHtml(place.category)}</span>
-      ${location.suburb ? `<span class="category suburb">${escapeHtml(location.suburb)}</span>` : ""}
+      <div class="popup-tags">
+        <span class="category ${categoryClass(place.category)}">${escapeHtml(place.category)}</span>
+        ${location.suburb ? `<span class="category suburb">${escapeHtml(location.suburb)}</span>` : ""}
+      </div>
       <h2>${escapeHtml(place.name)}</h2>
       <p>${escapeHtml(place.description)}</p>
       <p><span class="address-label">Address</span>${escapeHtml(location.displayAddress)}</p>
