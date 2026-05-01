@@ -1034,7 +1034,7 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "name": "The Rose Hotel",
     "address": "406 Napier St Fitzroy VIC 3065",
     "category": "Pub/Bar",
-    "description": "User-recommended dog-friendly Fitzroy pub.",
+    "description": "Dog-friendly Fitzroy pub with treats behind the bar.",
     "instagramUrl": "https://www.instagram.com/therosefitzroy/",
     "lat": -37.7955345,
     "lng": 144.9815065,
