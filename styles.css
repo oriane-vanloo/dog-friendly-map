@@ -103,7 +103,7 @@ input:focus-visible {
 
 .app-shell {
   display: grid;
-  grid-template-columns: 420px minmax(0, 1fr);
+  grid-template-columns: 460px minmax(0, 1fr);
   height: 100vh;
   min-height: 620px;
 }
@@ -295,6 +295,7 @@ h1 {
   font-weight: 700;
   line-height: 0.9;
   letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .summary {
