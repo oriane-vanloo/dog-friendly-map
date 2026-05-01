@@ -1,4 +1,8 @@
 const MELBOURNE_CENTER = [-37.8108, 144.9631];
+const POPULAR_SEARCHES_URL = "./data/popular-searches.json";
+const LOCAL_SEARCH_STORAGE_KEY = "bringYourDogSearches";
+const SEARCH_EVENT_TTL_MS = 24 * 60 * 60 * 1000;
+const MAX_SEARCH_SUGGESTIONS = 3;
 
 const categoryMeta = {
   Cafe: {
@@ -48,7 +52,10 @@ const suburbs = [
 
 let map;
 let places = [];
+let popularSearches = [];
 let selectedPlaceId = null;
+let activeSearchInput = null;
+let searchRecordTimer = null;
 
 const iconByCategory = Object.fromEntries(
   Object.entries(categoryMeta).map(([category, meta]) => [
@@ -71,6 +78,7 @@ const selectedPlaceDefaultParent = selectedPlace.parentElement;
 const selectedPlaceDefaultNextSibling = selectedPlace.nextSibling;
 const filterButtons = [...document.querySelectorAll(".filter-button")];
 const searchClearButtons = [...document.querySelectorAll("[data-clear-search]")];
+const searchSuggestionPanels = [...document.querySelectorAll("[data-search-suggestions]")];
 const mapElement = document.querySelector("#map");
 const mapPanel = document.querySelector(".map-panel");
 const mapExpandToggle = document.querySelector("#mapExpandToggle");
@@ -140,6 +148,153 @@ function getFilteredPlaces() {
   return places.filter((place) => {
     return activeCategories.has(place.category) && placeMatches(place, query);
   });
+}
+
+function cleanSearchQuery(value) {
+  return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function formatSuggestionCount(item) {
+  const count = Number(item.count) || 0;
+  const metric = item.metric || "searches";
+  const singular = metric === "places" ? "place" : "search";
+  const plural = metric === "places" ? "places" : "searches";
+
+  return `${count} ${count === 1 ? singular : plural}`;
+}
+
+function normalisePopularSearch(item) {
+  const query = cleanSearchQuery(item?.query || item?.term || item?.label || item?.name);
+  const count = Number(item?.count ?? item?.searches ?? item?.results ?? item?.places ?? 0);
+
+  if (!query || !Number.isFinite(count) || count < 1) {
+    return null;
+  }
+
+  return {
+    query,
+    count,
+    metric: item?.metric || (item?.places ? "places" : "searches"),
+  };
+}
+
+function readLocalSearchEvents() {
+  try {
+    const now = Date.now();
+    const events = JSON.parse(localStorage.getItem(LOCAL_SEARCH_STORAGE_KEY) || "[]");
+
+    return Array.isArray(events)
+      ? events.filter((event) => {
+        return cleanSearchQuery(event.query).length > 0 && now - Number(event.timestamp) <= SEARCH_EVENT_TTL_MS;
+      })
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeLocalSearchEvents(events) {
+  try {
+    localStorage.setItem(LOCAL_SEARCH_STORAGE_KEY, JSON.stringify(events.slice(-100)));
+  } catch {
+    // Local storage can be unavailable in private browsing or locked-down browsers.
+  }
+}
+
+function recordSearchQuery(value) {
+  const query = cleanSearchQuery(value);
+
+  if (query.length < 2) {
+    return;
+  }
+
+  const events = readLocalSearchEvents();
+  events.push({ query, timestamp: Date.now() });
+  writeLocalSearchEvents(events);
+}
+
+function queueSearchRecord(value) {
+  window.clearTimeout(searchRecordTimer);
+
+  const query = cleanSearchQuery(value);
+  if (query.length < 2) {
+    return;
+  }
+
+  searchRecordTimer = window.setTimeout(() => {
+    recordSearchQuery(query);
+    renderSearchSuggestions();
+  }, 900);
+}
+
+function getLocalPopularSearches() {
+  const grouped = new Map();
+
+  readLocalSearchEvents().forEach((event) => {
+    const query = cleanSearchQuery(event.query);
+    const key = query.toLowerCase();
+    const current = grouped.get(key) || { query, count: 0, metric: "searches" };
+    current.count += 1;
+    grouped.set(key, current);
+  });
+
+  return [...grouped.values()].sort((a, b) => b.count - a.count || a.query.localeCompare(b.query));
+}
+
+function getPlaceCountSuggestions() {
+  const grouped = new Map();
+
+  places.forEach((place) => {
+    const suburb = getLocationParts(place.address).suburb;
+    if (!suburb) {
+      return;
+    }
+
+    grouped.set(suburb, (grouped.get(suburb) || 0) + 1);
+  });
+
+  return [...grouped.entries()]
+    .map(([query, count]) => ({ query, count, metric: "places" }))
+    .sort((a, b) => b.count - a.count || a.query.localeCompare(b.query));
+}
+
+function getPopularSearchSuggestions(query) {
+  const cleanedQuery = cleanSearchQuery(query).toLowerCase();
+  const sources = [
+    popularSearches,
+    getLocalPopularSearches(),
+    getPlaceCountSuggestions(),
+  ];
+  const source = sources.find((items) => items.length > 0) || [];
+  const filtered = cleanedQuery
+    ? source.filter((item) => item.query.toLowerCase().includes(cleanedQuery))
+    : source;
+
+  return filtered.slice(0, MAX_SEARCH_SUGGESTIONS);
+}
+
+async function loadPopularSearches() {
+  const configuredSearches = Array.isArray(window.DOG_FRIENDLY_POPULAR_SEARCHES)
+    ? window.DOG_FRIENDLY_POPULAR_SEARCHES
+    : null;
+
+  if (configuredSearches) {
+    return configuredSearches.map(normalisePopularSearch).filter(Boolean);
+  }
+
+  try {
+    const response = await fetch(POPULAR_SEARCHES_URL, { cache: "no-store" });
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    return Array.isArray(data)
+      ? data.map(normalisePopularSearch).filter(Boolean)
+      : [];
+  } catch {
+    return [];
+  }
 }
 
 function getLocationParts(address) {
@@ -679,6 +834,75 @@ function syncSearchInputs(sourceInput) {
   updateSearchClearButtons();
 }
 
+function getSuggestionsPanelForInput(input) {
+  if (input === expandedSearchInput) {
+    return document.querySelector("#expandedSearchSuggestions");
+  }
+
+  return document.querySelector("#searchSuggestions");
+}
+
+function hideSearchSuggestions() {
+  activeSearchInput = null;
+  searchSuggestionPanels.forEach((panel) => {
+    panel.hidden = true;
+  });
+}
+
+function renderSearchSuggestions() {
+  searchSuggestionPanels.forEach((panel) => {
+    panel.hidden = true;
+  });
+
+  if (!activeSearchInput) {
+    return;
+  }
+
+  const panel = getSuggestionsPanelForInput(activeSearchInput);
+  const list = panel?.querySelector(".search-suggestions-list");
+  if (!panel || !list) {
+    return;
+  }
+
+  const suggestions = getPopularSearchSuggestions(activeSearchInput.value);
+  if (suggestions.length === 0) {
+    panel.hidden = true;
+    list.innerHTML = "";
+    return;
+  }
+
+  list.innerHTML = suggestions.map((item) => {
+    return `
+      <button class="search-suggestion-item" type="button" data-query="${escapeHtml(item.query)}" role="option">
+        <span class="search-suggestion-query">${escapeHtml(item.query)}</span>
+        <span class="search-suggestion-count">${escapeHtml(formatSuggestionCount(item))}</span>
+      </button>
+    `;
+  }).join("");
+  panel.hidden = false;
+}
+
+function showSearchSuggestions(input) {
+  activeSearchInput = input;
+  renderSearchSuggestions();
+}
+
+function applySearchSuggestion(query) {
+  const inputToFocus = activeSearchInput || searchInput;
+
+  searchInput.value = query;
+  if (expandedSearchInput) {
+    expandedSearchInput.value = query;
+  }
+
+  recordSearchQuery(query);
+  updateSearchClearButtons();
+  hideSearchSuggestions();
+  render({ fitBounds: true });
+
+  inputToFocus?.focus();
+}
+
 function updateSearchClearButtons() {
   const hasSearchValue = searchInput.value.length > 0;
 
@@ -759,7 +983,9 @@ function setupFilters() {
 
   const handleSearchInput = (event) => {
     syncSearchInputs(event.currentTarget);
+    queueSearchRecord(event.currentTarget.value);
     render({ fitBounds: true });
+    showSearchSuggestions(event.currentTarget);
   };
 
   searchInput.addEventListener("input", handleSearchInput);
@@ -769,6 +995,7 @@ function setupFilters() {
 
   searchClearButtons.forEach((button) => {
     button.addEventListener("click", () => {
+      window.clearTimeout(searchRecordTimer);
       searchInput.value = "";
       if (expandedSearchInput) {
         expandedSearchInput.value = "";
@@ -780,11 +1007,56 @@ function setupFilters() {
       const inputToFocus = button.closest(".expanded-search-wrap")
         ? expandedSearchInput
         : searchInput;
+      showSearchSuggestions(inputToFocus);
       inputToFocus?.focus();
     });
   });
 
   updateSearchClearButtons();
+}
+
+function setupSearchSuggestions() {
+  [searchInput, expandedSearchInput].filter(Boolean).forEach((input) => {
+    input.addEventListener("focus", () => showSearchSuggestions(input));
+    input.addEventListener("click", () => showSearchSuggestions(input));
+  });
+
+  searchSuggestionPanels.forEach((panel) => {
+    panel.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+    });
+
+    panel.addEventListener("click", (event) => {
+      if (!(event.target instanceof Element)) {
+        return;
+      }
+
+      const item = event.target.closest(".search-suggestion-item");
+      if (!item) {
+        return;
+      }
+
+      applySearchSuggestion(item.dataset.query || "");
+    });
+  });
+
+  document.addEventListener("pointerdown", (event) => {
+    if (!activeSearchInput || !(event.target instanceof Element)) {
+      return;
+    }
+
+    if (event.target.closest(".search-wrap, .expanded-search-wrap")) {
+      return;
+    }
+
+    hideSearchSuggestions();
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && activeSearchInput) {
+      hideSearchSuggestions();
+    }
+  });
 }
 
 function setupMobileMapToggle() {
@@ -828,6 +1100,10 @@ function setupMobileMapToggle() {
 
   window.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") {
+      return;
+    }
+
+    if (activeSearchInput) {
       return;
     }
 
@@ -922,9 +1198,13 @@ async function init() {
   setupMapResizeHandling();
   setupMobileMapToggle();
 
-  places = await loadPlaces();
+  [places, popularSearches] = await Promise.all([
+    loadPlaces(),
+    loadPopularSearches(),
+  ]);
   setupMarkers();
   setupFilters();
+  setupSearchSuggestions();
   render({ fitBounds: true });
   [60, 180, 420, 900].forEach((delay) => {
     window.setTimeout(() => refreshMapLayout({ fitBounds: true }), delay);

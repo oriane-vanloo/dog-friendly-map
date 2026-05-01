@@ -36,10 +36,14 @@
 
         <div class="search-wrap">
           <label for="search">Search places</label>
-          <input id="search" type="search" placeholder="Search by name, suburb, or feature">
+          <input id="search" type="search" placeholder="Search by name, suburb, or feature" autocomplete="off">
           <button class="search-clear" type="button" aria-label="Clear search" data-clear-search hidden>
             <img src="./assets/icons/eraseicon.svg" alt="">
           </button>
+          <div id="searchSuggestions" class="search-suggestions" data-search-suggestions hidden>
+            <p class="search-suggestions-title">Pawpular today</p>
+            <div class="search-suggestions-list" role="listbox" aria-label="Pawpular today"></div>
+          </div>
         </div>
 
         <section id="selectedPlace" class="selected-place" aria-live="polite">
@@ -86,6 +90,10 @@
             <button class="search-clear" type="button" aria-label="Clear search" data-clear-search hidden>
               <img src="./assets/icons/eraseicon.svg" alt="">
             </button>
+            <div id="expandedSearchSuggestions" class="search-suggestions" data-search-suggestions hidden>
+              <p class="search-suggestions-title">Pawpular today</p>
+              <div class="search-suggestions-list" role="listbox" aria-label="Pawpular today"></div>
+            </div>
           </div>
           <button id="expandedFilterToggle" class="expanded-filter-button" type="button" aria-expanded="false" aria-controls="expandedFilterSheet" aria-label="Filter categories">
             <img src="./assets/icons/filtericon.svg" alt="">
