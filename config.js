@@ -1,5 +1,5 @@
 window.DOG_MAP_CONFIG = {
-  googleAnalyticsMeasurementId: "",
+  googleAnalyticsMeasurementId: "G-HXQC5K1DFV",
   googleMapsApiKey: "",
   useGooglePlacePhotos: true,
   googlePhotoSearch: true,
