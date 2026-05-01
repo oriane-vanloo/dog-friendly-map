@@ -15,7 +15,8 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "description": "Dog-friendly outdoor beer garden and communal dining area.",
     "lat": -37.8098774,
     "lng": 144.9963564,
-    "geocodeSource": "nominatim"
+    "geocodeSource": "nominatim",
+    "instagramUrl": "https://www.instagram.com/abbots.yard/"
   },
   {
     "name": "Alimentari Fitzroy Delicatessen",
