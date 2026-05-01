@@ -1225,6 +1225,20 @@ function setupMobileMapToggle() {
     });
   }
 
+  document.addEventListener("pointerdown", (event) => {
+    if (!isExpandedFilterSheetOpen || !isMapExpanded || !mobileMapQuery.matches) {
+      return;
+    }
+    if (!(event.target instanceof Element)) {
+      return;
+    }
+    if (event.target.closest("#expandedFilterSheet, #expandedFilterToggle")) {
+      return;
+    }
+
+    setExpandedFilterSheet(false);
+  });
+
   const onMobileStateChange = () => {
     if (!mobileMapQuery.matches) {
       isMapExpanded = false;
