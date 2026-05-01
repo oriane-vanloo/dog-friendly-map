@@ -55,7 +55,6 @@ let places = [];
 let popularSearches = [];
 let selectedPlaceId = null;
 let activeSearchInput = null;
-let searchRecordTimer = null;
 
 const iconByCategory = Object.fromEntries(
   Object.entries(categoryMeta).map(([category, meta]) => [
@@ -255,38 +254,33 @@ function writeLocalSearchEvents(events) {
 }
 
 function recordSearchQuery(value) {
-  const query = cleanSearchQuery(value);
+  const canonicalSuggestion = getCanonicalPlaceSuggestion(value);
 
-  if (query.length < 2) {
+  if (!canonicalSuggestion) {
     return;
   }
 
   const events = readLocalSearchEvents();
-  events.push({ query, timestamp: Date.now() });
+  events.push({ query: canonicalSuggestion.query, timestamp: Date.now() });
   writeLocalSearchEvents(events);
-}
-
-function queueSearchRecord(value) {
-  window.clearTimeout(searchRecordTimer);
-
-  const query = cleanSearchQuery(value);
-  if (query.length < 2) {
-    return;
-  }
-
-  searchRecordTimer = window.setTimeout(() => {
-    recordSearchQuery(query);
-    renderSearchSuggestions();
-  }, 900);
 }
 
 function getLocalPopularSearches() {
   const grouped = new Map();
 
   readLocalSearchEvents().forEach((event) => {
-    const query = cleanSearchQuery(event.query);
-    const key = query.toLowerCase();
-    const current = grouped.get(key) || { query, count: 0, metric: "searches" };
+    const canonicalSuggestion = getCanonicalPlaceSuggestion(event.query);
+    if (!canonicalSuggestion) {
+      return;
+    }
+
+    const key = canonicalSuggestion.query.toLowerCase();
+    const current = grouped.get(key) || {
+      query: canonicalSuggestion.query,
+      count: 0,
+      metric: "places",
+      placeCount: canonicalSuggestion.placeCount,
+    };
     current.count += 1;
     grouped.set(key, current);
   });
@@ -311,6 +305,63 @@ function getPlaceCountSuggestions() {
     .sort((a, b) => b.count - a.count || a.query.localeCompare(b.query));
 }
 
+function getCanonicalPlaceSuggestion(value) {
+  const cleanedQuery = cleanSearchQuery(value);
+  const queryKey = cleanedQuery.toLowerCase();
+
+  if (!queryKey) {
+    return null;
+  }
+
+  const suburbSuggestion = getPlaceCountSuggestions().find((item) => {
+    return item.query.toLowerCase() === queryKey;
+  });
+  if (suburbSuggestion) {
+    return hydrateSuggestionItem(suburbSuggestion);
+  }
+
+  const place = places.find((item) => item.name.toLowerCase() === queryKey);
+  if (!place) {
+    return null;
+  }
+
+  return {
+    query: place.name,
+    count: 1,
+    metric: "places",
+    placeCount: 1,
+  };
+}
+
+function toCanonicalPopularSuggestion(item) {
+  const canonicalSuggestion = getCanonicalPlaceSuggestion(item.query);
+
+  if (!canonicalSuggestion) {
+    return null;
+  }
+
+  return {
+    ...item,
+    query: canonicalSuggestion.query,
+    metric: "places",
+    placeCount: canonicalSuggestion.placeCount,
+  };
+}
+
+function uniqueSuggestionsByQuery(items) {
+  const seen = new Set();
+
+  return items.filter((item) => {
+    const key = item.query.toLowerCase();
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
 function getPopularSearchSuggestions(query) {
   const cleanedQuery = cleanSearchQuery(query).toLowerCase();
   const sources = [
@@ -327,9 +378,11 @@ function getPopularSearchSuggestions(query) {
     const filtered = cleanedQuery
       ? source.filter((item) => item.query.toLowerCase().includes(cleanedQuery))
       : source;
-    const hydratedSuggestions = filtered
-      .map(hydrateSuggestionItem)
-      .filter(Boolean);
+    const hydratedSuggestions = uniqueSuggestionsByQuery(
+      filtered
+        .map(toCanonicalPopularSuggestion)
+        .filter(Boolean)
+    );
 
     if (hydratedSuggestions.length > 0) {
       return hydratedSuggestions.slice(0, MAX_SEARCH_SUGGESTIONS);
@@ -1073,7 +1126,6 @@ function setupFilters() {
 
   const handleSearchInput = (event) => {
     syncSearchInputs(event.currentTarget);
-    queueSearchRecord(event.currentTarget.value);
     render({ fitBounds: true });
     showSearchSuggestions(event.currentTarget);
   };
@@ -1085,7 +1137,6 @@ function setupFilters() {
 
   searchClearButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      window.clearTimeout(searchRecordTimer);
       searchInput.value = "";
       if (expandedSearchInput) {
         expandedSearchInput.value = "";
