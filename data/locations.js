@@ -826,6 +826,7 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "address": "56 Johnston St Fitzroy VIC 3065",
     "category": "Pub/Bar",
     "description": "Dog-friendly bar with outdoor seating.",
+    "instagramUrl": "https://www.instagram.com/sugargliderbar/",
     "lat": -37.7983041,
     "lng": 144.9765237,
     "geocodeSource": "csv"
