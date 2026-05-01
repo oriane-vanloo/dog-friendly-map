@@ -407,6 +407,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Greensleeves Coffee House",
+    "address": "100 Scotchmer St Fitzroy North VIC 3068",
+    "category": "Cafe",
+    "description": "Dogs welcome at outdoor seating and courtyard tables.",
+    "lat": -37.7832356,
+    "lng": 144.9821608,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Hachi Dog Boutique & Spa",
     "address": "16A Toorak Rd South Yarra VIC 3141",
     "category": "Shop",
