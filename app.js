@@ -821,6 +821,22 @@ function renderList(filteredPlaces) {
     fragment.append(item);
   });
 
+  const contactItem = document.createElement("li");
+  contactItem.className = "list-contact-card";
+  contactItem.innerHTML = `
+    <p>
+      <span>Know a dog-friendly business not listed here?</span>
+      <span class="contact-action">
+        Reach out to
+        <a href="https://www.instagram.com/kirathesmol" target="_blank" rel="noopener noreferrer">
+          <span class="instagram-link-icon" aria-hidden="true"></span>
+          <span>kirathesmol</span>
+        </a>
+      </span>
+    </p>
+  `;
+  fragment.append(contactItem);
+
   placeList.append(fragment);
 }
 

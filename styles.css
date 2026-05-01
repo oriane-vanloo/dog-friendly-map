@@ -1000,6 +1000,61 @@ h1 {
   list-style: none;
 }
 
+.list-contact-card {
+  padding: 22px 4px 8px;
+  color: var(--muted);
+  background: transparent;
+  list-style: none;
+}
+
+.list-contact-card p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 4px;
+  row-gap: 2px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.contact-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.list-contact-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration-color: rgba(30, 41, 59, 0.28);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.list-contact-card a:hover {
+  color: #8C566F;
+  text-decoration-color: currentColor;
+}
+
+.list-contact-card a:active {
+  color: var(--button);
+}
+
+.instagram-link-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: url("./assets/icons/instagramicon.svg") center / contain no-repeat;
+  mask: url("./assets/icons/instagramicon.svg") center / contain no-repeat;
+}
+
 .place-card {
   --card-y: 0px;
   border: 1px solid rgba(226, 232, 240, 0.86);
