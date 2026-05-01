@@ -154,13 +154,46 @@ function cleanSearchQuery(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
 
-function formatSuggestionCount(item) {
-  const count = Number(item.count) || 0;
-  const metric = item.metric || "searches";
-  const singular = metric === "places" ? "place" : "search";
-  const plural = metric === "places" ? "places" : "searches";
+function getSuburbPlaceCount(query) {
+  const targetSuburb = cleanSearchQuery(query).toLowerCase();
 
-  return `${count} ${count === 1 ? singular : plural}`;
+  if (!targetSuburb) {
+    return 0;
+  }
+
+  return places.filter((place) => {
+    return getLocationParts(place.address).suburb.toLowerCase() === targetSuburb;
+  }).length;
+}
+
+function getSuggestionPlaceCount(query) {
+  const cleanedQuery = cleanSearchQuery(query);
+  const suburbCount = getSuburbPlaceCount(cleanedQuery);
+
+  if (suburbCount > 0) {
+    return suburbCount;
+  }
+
+  return places.filter((place) => placeMatches(place, cleanedQuery)).length;
+}
+
+function hydrateSuggestionItem(item) {
+  const placeCount = getSuggestionPlaceCount(item.query);
+
+  if (placeCount < 1) {
+    return null;
+  }
+
+  return {
+    ...item,
+    placeCount,
+  };
+}
+
+function formatSuggestionCount(item) {
+  const count = Number(item.placeCount) || getSuggestionPlaceCount(item.query);
+
+  return `${count} ${count === 1 ? "place" : "places"}`;
 }
 
 function normalisePopularSearch(item) {
@@ -265,12 +298,25 @@ function getPopularSearchSuggestions(query) {
     getLocalPopularSearches(),
     getPlaceCountSuggestions(),
   ];
-  const source = sources.find((items) => items.length > 0) || [];
-  const filtered = cleanedQuery
-    ? source.filter((item) => item.query.toLowerCase().includes(cleanedQuery))
-    : source;
 
-  return filtered.slice(0, MAX_SEARCH_SUGGESTIONS);
+  for (const source of sources) {
+    if (source.length === 0) {
+      continue;
+    }
+
+    const filtered = cleanedQuery
+      ? source.filter((item) => item.query.toLowerCase().includes(cleanedQuery))
+      : source;
+    const hydratedSuggestions = filtered
+      .map(hydrateSuggestionItem)
+      .filter(Boolean);
+
+    if (hydratedSuggestions.length > 0) {
+      return hydratedSuggestions.slice(0, MAX_SEARCH_SUGGESTIONS);
+    }
+  }
+
+  return [];
 }
 
 async function loadPopularSearches() {
