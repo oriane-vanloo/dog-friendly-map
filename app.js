@@ -82,6 +82,8 @@ const searchSuggestionPanels = [...document.querySelectorAll("[data-search-sugge
 const mapElement = document.querySelector("#map");
 const mapPanel = document.querySelector(".map-panel");
 const mapExpandToggle = document.querySelector("#mapExpandToggle");
+const desktopZoomIn = document.querySelector("#desktopZoomIn");
+const desktopZoomOut = document.querySelector("#desktopZoomOut");
 const expandedMapHome = document.querySelector("#expandedMapHome");
 const expandedSearchInput = document.querySelector("#expandedSearch");
 const expandedFilterToggle = document.querySelector("#expandedFilterToggle");
@@ -1498,6 +1500,40 @@ function setupMobileMapToggle() {
   updateMobileMapState({ fitBounds: true });
 }
 
+function updateDesktopZoomControls() {
+  if (!map || !desktopZoomIn || !desktopZoomOut) {
+    return;
+  }
+
+  desktopZoomIn.disabled = map.getZoom() >= map.getMaxZoom();
+  desktopZoomOut.disabled = map.getZoom() <= map.getMinZoom();
+}
+
+function setupDesktopZoomControls() {
+  if (!desktopZoomIn || !desktopZoomOut) {
+    return;
+  }
+
+  desktopZoomIn.addEventListener("click", () => {
+    map.zoomIn();
+    trackEvent("map_zoom", {
+      zoom_direction: "in",
+      map_surface: currentMapSurface(),
+    });
+  });
+
+  desktopZoomOut.addEventListener("click", () => {
+    map.zoomOut();
+    trackEvent("map_zoom", {
+      zoom_direction: "out",
+      map_surface: currentMapSurface(),
+    });
+  });
+
+  map.on("zoomend", updateDesktopZoomControls);
+  updateDesktopZoomControls();
+}
+
 function setupMapResizeHandling() {
   const refresh = () => refreshMapLayout();
 
@@ -1574,6 +1610,7 @@ async function init() {
   markerLayer.addTo(map);
   setupMapResizeHandling();
   setupMobileMapToggle();
+  setupDesktopZoomControls();
 
   [places, popularSearches] = await Promise.all([
     loadPlaces(),
