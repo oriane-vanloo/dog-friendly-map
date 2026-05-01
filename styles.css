@@ -954,29 +954,50 @@ h1 {
   text-transform: uppercase;
 }
 
+.place-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
 .place-instagram-link {
   display: inline-flex;
   width: fit-content;
-  min-height: 34px;
+  min-height: 36px;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  margin-bottom: 5px;
+  border: 1px solid rgba(30, 41, 59, 0.54);
+  border-radius: 999px;
+  padding: 7px 14px;
   color: var(--foreground);
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.3;
-  text-decoration-color: rgba(30, 41, 59, 0.28);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 12px 20px rgba(30, 41, 59, 0.04);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    transform 280ms ease,
+    color 280ms ease,
+    border-color 280ms ease,
+    background 280ms ease;
 }
 
 .place-instagram-link:hover {
   color: #8C566F;
-  text-decoration-color: currentColor;
+  border-color: #8C566F;
+  background: rgba(255, 255, 255, 0.76);
+  transform: translateY(-1px);
 }
 
 .place-instagram-link:active {
   color: var(--button);
+  border-color: var(--button);
+  transform: translateY(0);
 }
 
 .get-there {

@@ -729,7 +729,7 @@ function renderSelectedPlace(place) {
   const instagramUrl = safeExternalUrl(place.instagramUrl);
   const instagramMarkup = instagramUrl
     ? `
-      <a class="place-instagram-link" href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer">
+      <a class="place-instagram-link" href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(`${place.name} on Instagram`)}">
         <span class="instagram-link-icon" aria-hidden="true"></span>
         <span>Instagram</span>
       </a>
@@ -755,8 +755,10 @@ function renderSelectedPlace(place) {
       <strong>Address</strong>
       ${escapeHtml(location.displayAddress)}
     </p>
-    ${instagramMarkup}
-    <a class="get-there" href="${googleMapsUrl(place)}" data-place-id="${escapeHtml(place.id)}" target="_blank" rel="noopener noreferrer">Get there</a>
+    <div class="place-actions">
+      <a class="get-there" href="${googleMapsUrl(place)}" data-place-id="${escapeHtml(place.id)}" target="_blank" rel="noopener noreferrer">Get there</a>
+      ${instagramMarkup}
+    </div>
   `;
 
   selectedPlace.querySelector(".detail-close").addEventListener("click", () => {
