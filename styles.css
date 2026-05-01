@@ -957,8 +957,10 @@ h1 {
 .place-instagram-link {
   display: inline-flex;
   width: fit-content;
+  min-height: 34px;
   align-items: center;
   gap: 6px;
+  margin-bottom: 5px;
   color: var(--foreground);
   font-size: 14px;
   font-weight: 500;
