@@ -30,3 +30,17 @@ Selected place cards support two photo sources:
 - Google Places photos load on demand when `config.js` has a browser-restricted Google Maps API key.
 
 For Google photos, enable Maps JavaScript API and Places API (New), restrict the key to the live site URL, and keep the visible author/Google Maps attribution overlay.
+
+## Analytics
+
+Google Analytics 4 is wired up behind `config.js`.
+
+Add the GA4 Measurement ID when it is ready:
+
+```js
+window.DOG_MAP_CONFIG = {
+  googleAnalyticsMeasurementId: "G-XXXXXXXXXX",
+};
+```
+
+Tracked events include searches, suggestion clicks, filters, place opens, Get there clicks, Instagram clicks, and mobile map expansion.

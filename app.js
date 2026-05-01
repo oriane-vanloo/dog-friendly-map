@@ -3,6 +3,7 @@ const POPULAR_SEARCHES_URL = "./data/popular-searches.json";
 const LOCAL_SEARCH_STORAGE_KEY = "bringYourDogSearches";
 const SEARCH_EVENT_TTL_MS = 24 * 60 * 60 * 1000;
 const MAX_SEARCH_SUGGESTIONS = 3;
+const SEARCH_ANALYTICS_DEBOUNCE_MS = 900;
 
 const categoryMeta = {
   Cafe: {
@@ -87,6 +88,7 @@ const expandedFilterToggle = document.querySelector("#expandedFilterToggle");
 const expandedFilterBadge = document.querySelector("#expandedFilterBadge");
 const expandedFilterSheet = document.querySelector("#expandedFilterSheet");
 const appConfig = {
+  googleAnalyticsMeasurementId: "",
   googleMapsApiKey: "",
   useGooglePlacePhotos: true,
   googlePhotoSearch: true,
@@ -94,6 +96,7 @@ const appConfig = {
   googlePhotoMaxHeight: 420,
   ...(window.DOG_MAP_CONFIG || {}),
 };
+const analyticsMeasurementId = String(appConfig.googleAnalyticsMeasurementId || appConfig.gaMeasurementId || "").trim();
 const manualPhotoOverrides = window.DOG_FRIENDLY_MANUAL_PHOTOS || {};
 const googlePhotoCache = new Map();
 
@@ -103,7 +106,88 @@ let googleMapsScriptPromise = null;
 let placesLibraryPromise = null;
 let isMapExpanded = false;
 let isExpandedFilterSheetOpen = false;
+let searchAnalyticsTimeout = null;
 const mobileMapQuery = window.matchMedia("(max-width: 860px)");
+
+function initAnalytics() {
+  if (!/^G-[A-Z0-9]+$/i.test(analyticsMeasurementId)) {
+    return;
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function gtag() {
+    window.dataLayer.push(arguments);
+  };
+
+  window.gtag("js", new Date());
+  window.gtag("config", analyticsMeasurementId, {
+    page_title: document.title,
+    page_path: window.location.pathname || "/",
+  });
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(analyticsMeasurementId)}`;
+  document.head.append(script);
+}
+
+function trackEvent(name, params = {}) {
+  if (!window.gtag || !analyticsMeasurementId) {
+    return;
+  }
+
+  window.gtag("event", name, {
+    app_name: "bring_your_dog",
+    ...params,
+  });
+}
+
+function searchSurfaceForInput(input) {
+  return input === expandedSearchInput ? "expanded_map" : "main";
+}
+
+function currentMapSurface() {
+  if (isMapExpanded) {
+    return "expanded_map";
+  }
+
+  return shouldUseBottomSheet() ? "mobile_home" : "desktop";
+}
+
+function placeAnalyticsParams(place) {
+  const location = getLocationParts(place.address);
+
+  return {
+    place_name: place.name,
+    place_category: place.category,
+    suburb: location.suburb || "",
+    has_instagram: Boolean(place.instagramUrl),
+  };
+}
+
+function trackSearch(query, source, extraParams = {}) {
+  const searchTerm = cleanSearchQuery(query);
+
+  if (!searchTerm) {
+    return;
+  }
+
+  trackEvent("search", {
+    search_term: searchTerm,
+    search_surface: source,
+    result_count: getFilteredPlaces().length,
+    ...extraParams,
+  });
+}
+
+function queueSearchTracking(input) {
+  window.clearTimeout(searchAnalyticsTimeout);
+  searchAnalyticsTimeout = window.setTimeout(() => {
+    trackSearch(input.value, searchSurfaceForInput(input), {
+      search_method: "typed",
+    });
+  }, SEARCH_ANALYTICS_DEBOUNCE_MS);
+}
 
 function escapeHtml(value) {
   return String(value)
@@ -727,7 +811,7 @@ function instagramActionHtml(place) {
   }
 
   return `
-    <a class="place-instagram-link" href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(`${place.name} on Instagram`)}">
+    <a class="place-instagram-link" href="${escapeHtml(instagramUrl)}" data-place-id="${escapeHtml(place.id)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(`${place.name} on Instagram`)}">
       ${instagramIconHtml()}
       <span>Instagram</span>
     </a>
@@ -856,7 +940,7 @@ function renderList(filteredPlaces) {
     `;
 
     button.addEventListener("click", () => {
-      selectPlace(place, { openPopup: true, pan: true });
+      selectPlace(place, { openPopup: true, pan: true, source: "list_card" });
     });
 
     item.append(button);
@@ -967,9 +1051,14 @@ function shouldUseBottomSheet() {
   return mobileMapQuery.matches;
 }
 
-function selectPlace(place, { openPopup = false, pan = false } = {}) {
+function selectPlace(place, { openPopup = false, pan = false, source = "unknown" } = {}) {
   selectedPlaceId = place.id;
   render();
+  trackEvent("place_select", {
+    ...placeAnalyticsParams(place),
+    selection_source: source,
+    map_surface: currentMapSurface(),
+  });
 
   const marker = markersByPlace.get(place.id);
   if (pan) {
@@ -1090,7 +1179,9 @@ function showSearchSuggestions(input) {
 
 function applySearchSuggestion(query) {
   const inputToFocus = activeSearchInput || searchInput;
+  const isTypedSearch = cleanSearchQuery(inputToFocus?.value).length > 0;
 
+  window.clearTimeout(searchAnalyticsTimeout);
   searchInput.value = query;
   if (expandedSearchInput) {
     expandedSearchInput.value = query;
@@ -1100,6 +1191,15 @@ function applySearchSuggestion(query) {
   updateSearchClearButtons();
   hideSearchSuggestions();
   render({ fitBounds: true });
+  trackEvent("search_suggestion_click", {
+    search_term: query,
+    suggestion_type: isTypedSearch ? "typed" : "popular",
+    search_surface: searchSurfaceForInput(inputToFocus),
+    place_count: getSuggestionPlaceCount(query),
+  });
+  trackSearch(query, searchSurfaceForInput(inputToFocus), {
+    search_method: "suggestion",
+  });
 
   inputToFocus?.focus();
 }
@@ -1178,6 +1278,12 @@ function setupFilters() {
         activeCategories.add(category);
       }
 
+      trackEvent("filter_toggle", {
+        category,
+        enabled: activeCategories.has(category),
+        active_category_count: activeCategories.size,
+        filter_surface: currentMapSurface(),
+      });
       render({ fitBounds: true });
     });
   });
@@ -1186,6 +1292,7 @@ function setupFilters() {
     syncSearchInputs(event.currentTarget);
     render({ fitBounds: true });
     showSearchSuggestions(event.currentTarget);
+    queueSearchTracking(event.currentTarget);
   };
 
   searchInput.addEventListener("input", handleSearchInput);
@@ -1195,6 +1302,14 @@ function setupFilters() {
 
   searchClearButtons.forEach((button) => {
     button.addEventListener("click", () => {
+      const inputToFocus = button.closest(".expanded-search-wrap")
+        ? expandedSearchInput
+        : searchInput;
+      trackEvent("search_clear", {
+        search_surface: searchSurfaceForInput(inputToFocus || searchInput),
+      });
+
+      window.clearTimeout(searchAnalyticsTimeout);
       searchInput.value = "";
       if (expandedSearchInput) {
         expandedSearchInput.value = "";
@@ -1203,9 +1318,6 @@ function setupFilters() {
       updateSearchClearButtons();
       render({ fitBounds: true });
 
-      const inputToFocus = button.closest(".expanded-search-wrap")
-        ? expandedSearchInput
-        : searchInput;
       showSearchSuggestions(inputToFocus);
       inputToFocus?.focus();
     });
@@ -1258,11 +1370,52 @@ function setupSearchSuggestions() {
   });
 }
 
+function setupActionTracking() {
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) {
+      return;
+    }
+
+    const getThereLink = event.target.closest(".get-there[data-place-id]");
+    if (getThereLink) {
+      const place = places.find((item) => item.id === getThereLink.dataset.placeId);
+      if (place) {
+        trackEvent("get_there_click", {
+          ...placeAnalyticsParams(place),
+          link_surface: currentMapSurface(),
+        });
+      }
+      return;
+    }
+
+    const placeInstagramLink = event.target.closest(".place-instagram-link[data-place-id]");
+    if (placeInstagramLink) {
+      const place = places.find((item) => item.id === placeInstagramLink.dataset.placeId);
+      if (place) {
+        trackEvent("instagram_click", {
+          ...placeAnalyticsParams(place),
+          link_surface: currentMapSurface(),
+        });
+      }
+      return;
+    }
+
+    if (event.target.closest(".list-contact-card a[href*='instagram.com']")) {
+      trackEvent("contact_instagram_click", {
+        link_surface: "place_list",
+      });
+    }
+  });
+}
+
 function setupMobileMapToggle() {
   mapExpandToggle.addEventListener("click", () => {
     const wasExpanded = isMapExpanded;
     isMapExpanded = !isMapExpanded;
     updateMobileMapState({ fitBounds: true });
+    trackEvent(isMapExpanded ? "map_expand" : "map_collapse", {
+      map_surface: "mobile_home",
+    });
     if (wasExpanded && !isMapExpanded) {
       mapPanel.scrollIntoView({ block: "start" });
     }
@@ -1273,6 +1426,10 @@ function setupMobileMapToggle() {
       isMapExpanded = false;
       setExpandedFilterSheet(false);
       updateMobileMapState({ fitBounds: true });
+      trackEvent("map_collapse", {
+        map_surface: "expanded_map",
+        collapse_source: "logo",
+      });
       mapPanel.scrollIntoView({ block: "start" });
     });
   }
@@ -1280,6 +1437,9 @@ function setupMobileMapToggle() {
   if (expandedFilterToggle) {
     expandedFilterToggle.addEventListener("click", () => {
       setExpandedFilterSheet(!isExpandedFilterSheetOpen);
+      trackEvent(isExpandedFilterSheetOpen ? "filter_sheet_open" : "filter_sheet_close", {
+        filter_surface: "expanded_map",
+      });
     });
   }
 
@@ -1365,7 +1525,7 @@ function setupMarkers() {
     }).bindPopup(popupHtml(place));
 
     marker.on("click", () => {
-      selectPlace(place, { openPopup: !shouldUseBottomSheet() });
+      selectPlace(place, { openPopup: !shouldUseBottomSheet(), source: "map_marker" });
     });
 
     markersByPlace.set(place.id, marker);
@@ -1418,12 +1578,14 @@ async function init() {
   setupMarkers();
   setupFilters();
   setupSearchSuggestions();
+  setupActionTracking();
   render({ fitBounds: true });
   [60, 180, 420, 900].forEach((delay) => {
     window.setTimeout(() => refreshMapLayout({ fitBounds: true }), delay);
   });
 }
 
+initAnalytics();
 init().catch((error) => {
   console.error(error);
   resultCount.textContent = "Could not load map data.";
