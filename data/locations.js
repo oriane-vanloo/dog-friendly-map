@@ -543,6 +543,16 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Lost and Found Market",
+    "address": "288 Brunswick St Fitzroy VIC 3065",
+    "category": "Shop",
+    "description": "Leashed dogs welcome while browsing the vintage market.",
+    "lat": -37.798486,
+    "lng": 144.97865,
+    "geocodeSource": "manual",
+    "instagramUrl": "https://www.instagram.com/lostandfoundmarket/"
+  },
+  {
     "name": "Lulie Tavern",
     "address": "225 Johnston St Abbotsford VIC 3067",
     "category": "Pub/Bar",
