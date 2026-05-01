@@ -702,6 +702,7 @@ async function hydrateSelectedPhoto(place) {
 
 function popupHtml(place) {
   const location = getLocationParts(place.address);
+  const instagramMarkup = instagramActionHtml(place);
 
   return `
     <article class="popup">
@@ -710,8 +711,26 @@ function popupHtml(place) {
       <h2>${escapeHtml(place.name)}</h2>
       <p>${escapeHtml(place.description)}</p>
       <p><span class="address-label">Address</span>${escapeHtml(location.displayAddress)}</p>
-      <a class="get-there" href="${googleMapsUrl(place)}" data-place-id="${escapeHtml(place.id)}" target="_blank" rel="noopener noreferrer">Get there</a>
+      <div class="place-actions">
+        <a class="get-there" href="${googleMapsUrl(place)}" data-place-id="${escapeHtml(place.id)}" target="_blank" rel="noopener noreferrer">Get there</a>
+        ${instagramMarkup}
+      </div>
     </article>
+  `;
+}
+
+function instagramActionHtml(place) {
+  const instagramUrl = safeExternalUrl(place.instagramUrl);
+
+  if (!instagramUrl) {
+    return "";
+  }
+
+  return `
+    <a class="place-instagram-link" href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(`${place.name} on Instagram`)}">
+      <span class="instagram-link-icon" aria-hidden="true"></span>
+      <span>Instagram</span>
+    </a>
   `;
 }
 
@@ -726,15 +745,7 @@ function renderSelectedPlace(place) {
   const location = getLocationParts(place.address);
   const manualPhoto = getManualPhotos(place)[0];
   const shouldLoadGooglePhoto = !manualPhoto && googlePhotosEnabled();
-  const instagramUrl = safeExternalUrl(place.instagramUrl);
-  const instagramMarkup = instagramUrl
-    ? `
-      <a class="place-instagram-link" href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(`${place.name} on Instagram`)}">
-        <span class="instagram-link-icon" aria-hidden="true"></span>
-        <span>Instagram</span>
-      </a>
-    `
-    : "";
+  const instagramMarkup = instagramActionHtml(place);
   const photoMarkup = manualPhoto
     ? renderPlacePhoto(manualPhoto, place)
     : shouldLoadGooglePhoto
