@@ -190,6 +190,26 @@ function hydrateSuggestionItem(item) {
   };
 }
 
+function highlightSuggestionMatch(value, query) {
+  const label = String(value || "");
+  const cleanedQuery = cleanSearchQuery(query);
+
+  if (!cleanedQuery) {
+    return escapeHtml(label);
+  }
+
+  const startIndex = label.toLowerCase().indexOf(cleanedQuery.toLowerCase());
+  if (startIndex < 0) {
+    return escapeHtml(label);
+  }
+
+  const before = label.slice(0, startIndex);
+  const match = label.slice(startIndex, startIndex + cleanedQuery.length);
+  const after = label.slice(startIndex + cleanedQuery.length);
+
+  return `${escapeHtml(before)}<span class="search-suggestion-match">${escapeHtml(match)}</span>${escapeHtml(after)}`;
+}
+
 function formatSuggestionCount(item) {
   const count = Number(item.placeCount) || getSuggestionPlaceCount(item.query);
 
@@ -317,6 +337,20 @@ function getPopularSearchSuggestions(query) {
   }
 
   return [];
+}
+
+function getTypedSearchSuggestions(query) {
+  const cleanedQuery = cleanSearchQuery(query).toLowerCase();
+
+  if (!cleanedQuery) {
+    return [];
+  }
+
+  return getPlaceCountSuggestions()
+    .filter((item) => item.query.toLowerCase().includes(cleanedQuery))
+    .map(hydrateSuggestionItem)
+    .filter(Boolean)
+    .slice(0, MAX_SEARCH_SUGGESTIONS);
 }
 
 async function loadPopularSearches() {
@@ -906,21 +940,31 @@ function renderSearchSuggestions() {
 
   const panel = getSuggestionsPanelForInput(activeSearchInput);
   const list = panel?.querySelector(".search-suggestions-list");
+  const title = panel?.querySelector(".search-suggestions-title");
   if (!panel || !list) {
     return;
   }
 
-  const suggestions = getPopularSearchSuggestions(activeSearchInput.value);
+  const searchValue = activeSearchInput.value;
+  const isTypedSearch = cleanSearchQuery(searchValue).length > 0;
+  const suggestions = isTypedSearch
+    ? getTypedSearchSuggestions(searchValue)
+    : getPopularSearchSuggestions(searchValue);
   if (suggestions.length === 0) {
     panel.hidden = true;
     list.innerHTML = "";
     return;
   }
 
+  panel.classList.toggle("is-typed", isTypedSearch);
+  if (title) {
+    title.hidden = isTypedSearch;
+  }
+
   list.innerHTML = suggestions.map((item) => {
     return `
       <button class="search-suggestion-item" type="button" data-query="${escapeHtml(item.query)}" role="option">
-        <span class="search-suggestion-query">${escapeHtml(item.query)}</span>
+        <span class="search-suggestion-query">${highlightSuggestionMatch(item.query, isTypedSearch ? searchValue : "")}</span>
         <span class="search-suggestion-count">${escapeHtml(formatSuggestionCount(item))}</span>
       </button>
     `;
