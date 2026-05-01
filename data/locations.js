@@ -63,6 +63,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Augie's Place",
+    "address": "460 Victoria St Brunswick VIC 3056",
+    "category": "Cafe",
+    "description": "Dog-friendly cafe with dog treats and drinks.",
+    "lat": -37.7657742,
+    "lng": 144.9506522,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Babble Bar & Cafe",
     "address": "4B Izett St Prahran VIC 3181",
     "category": "Cafe",
@@ -189,6 +198,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Carwyn Cellars",
+    "address": "877 High St Thornbury VIC 3071",
+    "category": "Pub/Bar",
+    "description": "Dog-friendly beer garden and outdoor seating.",
+    "lat": -37.7540179,
+    "lng": 145.0012079,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Chris Gahan Reserve",
     "address": "19 Hornby St Windsor VIC 3181",
     "category": "Park",
@@ -306,6 +324,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Faraday's Cage",
+    "address": "325-329 Gore St Fitzroy VIC 3065",
+    "category": "Cafe",
+    "description": "Dog-friendly cafe with outdoor seating.",
+    "lat": -37.7993754,
+    "lng": 144.9827654,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Fawkner Park",
     "address": "24-88 Commercial Rd South Yarra VIC 3141",
     "category": "Park",
@@ -421,6 +448,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.82963,
     "lng": 144.97574,
     "geocodeSource": "manual"
+  },
+  {
+    "name": "Jerry Joy Cafe",
+    "address": "128 Mansfield St Thornbury VIC 3071",
+    "category": "Cafe",
+    "description": "Dog-friendly covered courtyard and outdoor area.",
+    "lat": -37.7574685,
+    "lng": 145.0097801,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "Jethro Canteen",
@@ -747,6 +783,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Sporting Club Hotel",
+    "address": "27 Weston St Brunswick VIC 3056",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the front bar, beer garden and outdoor seating.",
+    "lat": -37.7748361,
+    "lng": 144.9632853,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Stillman Cafe",
     "address": "237 Burnley St Richmond VIC 3121",
     "category": "Cafe",
@@ -756,6 +801,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Stomping Ground Brewery & Beer Hall",
+    "address": "100 Gipps St Collingwood VIC 3066",
+    "category": "Pub/Bar",
+    "description": "Leashed dogs welcome in the heated undercover courtyard.",
+    "lat": -37.8045616,
+    "lng": 144.9908005,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Sugar Glider Bar",
     "address": "56 Johnston St Fitzroy VIC 3065",
     "category": "Pub/Bar",
@@ -763,6 +817,24 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.7983041,
     "lng": 144.9765237,
     "geocodeSource": "csv"
+  },
+  {
+    "name": "Taita's Lebanese Kitchen",
+    "address": "73 Clarendon St Thornbury VIC 3071",
+    "category": "Cafe",
+    "description": "Dogs welcome in the patio courtyard.",
+    "lat": -37.7598919,
+    "lng": 145.0052674,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
+    "name": "Tallboy & Moose",
+    "address": "270 Raglan St Preston VIC 3072",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome indoors and on the patio with dog bowls.",
+    "lat": -37.7486826,
+    "lng": 145.0028763,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "Tall Timber Cafe",
@@ -864,6 +936,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "The Keys",
+    "address": "1/188 Plenty Rd Preston VIC 3072",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the courtyard.",
+    "lat": -37.7468183,
+    "lng": 145.0058527,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "The Local Taphouse",
     "address": "184 Carlisle St St Kilda East VIC 3183",
     "category": "Pub/Bar",
@@ -936,6 +1017,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "The Rose Hotel",
+    "address": "406 Napier St Fitzroy VIC 3065",
+    "category": "Pub/Bar",
+    "description": "User-recommended dog-friendly Fitzroy pub.",
+    "lat": -37.7955345,
+    "lng": 144.9815065,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "The Shady Lady",
     "address": "36 Johnston St Fitzroy VIC 3065",
     "category": "Pub/Bar",
@@ -979,6 +1069,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.83525,
     "lng": 144.945172,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "The Tramway Hotel",
+    "address": "165 Rae St Fitzroy North VIC 3068",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the small courtyard.",
+    "lat": -37.7885137,
+    "lng": 144.9789774,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "Uitgang Bar",
@@ -1033,6 +1132,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.7646905,
     "lng": 144.9999947,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Wesley Anne",
+    "address": "250 High St Northcote VIC 3070",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome on the front and rear patios.",
+    "lat": -37.7729134,
+    "lng": 144.9984324,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "West Beach Bathers Pavilion",
