@@ -954,6 +954,29 @@ h1 {
   text-transform: uppercase;
 }
 
+.place-instagram-link {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration-color: rgba(30, 41, 59, 0.28);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.place-instagram-link:hover {
+  color: #8C566F;
+  text-decoration-color: currentColor;
+}
+
+.place-instagram-link:active {
+  color: var(--button);
+}
+
 .get-there {
   display: inline-flex;
   width: fit-content;

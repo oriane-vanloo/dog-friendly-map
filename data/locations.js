@@ -67,6 +67,7 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "address": "460 Victoria St Brunswick VIC 3056",
     "category": "Cafe",
     "description": "Dog-friendly cafe with dog treats and drinks.",
+    "instagramUrl": "https://www.instagram.com/augiesplace/",
     "lat": -37.7657742,
     "lng": 144.9506522,
     "geocodeSource": "facebook+nominatim"
@@ -202,6 +203,7 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "address": "877 High St Thornbury VIC 3071",
     "category": "Pub/Bar",
     "description": "Dog-friendly beer garden and outdoor seating.",
+    "instagramUrl": "https://www.instagram.com/carwyncellars/",
     "lat": -37.7540179,
     "lng": 145.0012079,
     "geocodeSource": "facebook+nominatim"
@@ -805,6 +807,7 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "address": "100 Gipps St Collingwood VIC 3066",
     "category": "Pub/Bar",
     "description": "Leashed dogs welcome in the heated undercover courtyard.",
+    "instagramUrl": "https://www.instagram.com/stompinggroundbeer/",
     "lat": -37.8045616,
     "lng": 144.9908005,
     "geocodeSource": "facebook+nominatim"
@@ -832,6 +835,7 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "address": "270 Raglan St Preston VIC 3072",
     "category": "Pub/Bar",
     "description": "Dogs welcome indoors and on the patio with dog bowls.",
+    "instagramUrl": "https://www.instagram.com/tallboyandmoose/",
     "lat": -37.7486826,
     "lng": 145.0028763,
     "geocodeSource": "facebook+nominatim"
@@ -940,6 +944,7 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "address": "1/188 Plenty Rd Preston VIC 3072",
     "category": "Pub/Bar",
     "description": "Dogs welcome in the courtyard.",
+    "instagramUrl": "https://www.instagram.com/thekeyspreston/",
     "lat": -37.7468183,
     "lng": 145.0058527,
     "geocodeSource": "facebook+nominatim"
@@ -1021,6 +1026,7 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "address": "406 Napier St Fitzroy VIC 3065",
     "category": "Pub/Bar",
     "description": "User-recommended dog-friendly Fitzroy pub.",
+    "instagramUrl": "https://www.instagram.com/therosefitzroy/",
     "lat": -37.7955345,
     "lng": 144.9815065,
     "geocodeSource": "facebook+nominatim"

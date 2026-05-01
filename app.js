@@ -458,6 +458,15 @@ function googleMapsUrl(place) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name}, ${place.address}`)}`;
 }
 
+function safeExternalUrl(value) {
+  try {
+    const url = new URL(value);
+    return ["https:", "http:"].includes(url.protocol) ? url.toString() : "";
+  } catch {
+    return "";
+  }
+}
+
 function manualPhotoKey(place) {
   const location = getLocationParts(place.address);
   return slugify(`${place.name}-${location.suburb || place.address}`);
@@ -717,6 +726,15 @@ function renderSelectedPlace(place) {
   const location = getLocationParts(place.address);
   const manualPhoto = getManualPhotos(place)[0];
   const shouldLoadGooglePhoto = !manualPhoto && googlePhotosEnabled();
+  const instagramUrl = safeExternalUrl(place.instagramUrl);
+  const instagramMarkup = instagramUrl
+    ? `
+      <a class="place-instagram-link" href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer">
+        <span class="instagram-link-icon" aria-hidden="true"></span>
+        <span>Instagram</span>
+      </a>
+    `
+    : "";
   const photoMarkup = manualPhoto
     ? renderPlacePhoto(manualPhoto, place)
     : shouldLoadGooglePhoto
@@ -737,6 +755,7 @@ function renderSelectedPlace(place) {
       <strong>Address</strong>
       ${escapeHtml(location.displayAddress)}
     </p>
+    ${instagramMarkup}
     <a class="get-there" href="${googleMapsUrl(place)}" data-place-id="${escapeHtml(place.id)}" target="_blank" rel="noopener noreferrer">Get there</a>
   `;
 
