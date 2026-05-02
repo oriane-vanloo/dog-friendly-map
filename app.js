@@ -1,5 +1,4 @@
 const MELBOURNE_CENTER = [-37.8108, 144.9631];
-const POPULAR_SEARCHES_URL = "./data/popular-searches.json";
 const LOCAL_SEARCH_STORAGE_KEY = "bringYourDogSearches";
 const SEARCH_EVENT_TTL_MS = 24 * 60 * 60 * 1000;
 const MAX_SEARCH_SUGGESTIONS = 3;
@@ -53,7 +52,6 @@ const suburbs = [
 
 let map;
 let places = [];
-let popularSearches = [];
 let selectedPlaceId = null;
 let activeSearchInput = null;
 
@@ -305,21 +303,6 @@ function formatSuggestionCount(item) {
   return `${count} ${count === 1 ? "place" : "places"}`;
 }
 
-function normalisePopularSearch(item) {
-  const query = cleanSearchQuery(item?.query || item?.term || item?.label || item?.name);
-  const count = Number(item?.count ?? item?.searches ?? item?.results ?? item?.places ?? 0);
-
-  if (!query || !Number.isFinite(count) || count < 1) {
-    return null;
-  }
-
-  return {
-    query,
-    count,
-    metric: item?.metric || (item?.places ? "places" : "searches"),
-  };
-}
-
 function readLocalSearchEvents() {
   try {
     const now = Date.now();
@@ -454,32 +437,15 @@ function uniqueSuggestionsByQuery(items) {
 
 function getPopularSearchSuggestions(query) {
   const cleanedQuery = cleanSearchQuery(query).toLowerCase();
-  const sources = [
-    popularSearches,
-    getLocalPopularSearches(),
-    getPlaceCountSuggestions(),
-  ];
+  const filtered = cleanedQuery
+    ? getLocalPopularSearches().filter((item) => item.query.toLowerCase().includes(cleanedQuery))
+    : getLocalPopularSearches();
 
-  for (const source of sources) {
-    if (source.length === 0) {
-      continue;
-    }
-
-    const filtered = cleanedQuery
-      ? source.filter((item) => item.query.toLowerCase().includes(cleanedQuery))
-      : source;
-    const hydratedSuggestions = uniqueSuggestionsByQuery(
-      filtered
-        .map(toCanonicalPopularSuggestion)
-        .filter(Boolean)
-    );
-
-    if (hydratedSuggestions.length > 0) {
-      return hydratedSuggestions.slice(0, MAX_SEARCH_SUGGESTIONS);
-    }
-  }
-
-  return [];
+  return uniqueSuggestionsByQuery(
+    filtered
+      .map(toCanonicalPopularSuggestion)
+      .filter(Boolean)
+  ).slice(0, MAX_SEARCH_SUGGESTIONS);
 }
 
 function getTypedSearchSuggestions(query) {
@@ -494,30 +460,6 @@ function getTypedSearchSuggestions(query) {
     .map(hydrateSuggestionItem)
     .filter(Boolean)
     .slice(0, MAX_SEARCH_SUGGESTIONS);
-}
-
-async function loadPopularSearches() {
-  const configuredSearches = Array.isArray(window.DOG_FRIENDLY_POPULAR_SEARCHES)
-    ? window.DOG_FRIENDLY_POPULAR_SEARCHES
-    : null;
-
-  if (configuredSearches) {
-    return configuredSearches.map(normalisePopularSearch).filter(Boolean);
-  }
-
-  try {
-    const response = await fetch(POPULAR_SEARCHES_URL, { cache: "no-store" });
-    if (!response.ok) {
-      return [];
-    }
-
-    const data = await response.json();
-    return Array.isArray(data)
-      ? data.map(normalisePopularSearch).filter(Boolean)
-      : [];
-  } catch {
-    return [];
-  }
 }
 
 function getLocationParts(address) {
@@ -1261,7 +1203,7 @@ function applySearchSuggestion(query) {
   render({ fitBounds: true });
   trackEvent("search_suggestion_click", {
     search_term: query,
-    suggestion_type: isTypedSearch ? "typed" : "popular",
+    suggestion_type: isTypedSearch ? "typed" : "recent",
     search_surface: searchSurfaceForInput(inputToFocus),
     place_count: getSuggestionPlaceCount(query),
   });
@@ -1795,10 +1737,7 @@ async function init() {
   setupDesktopZoomControls();
   setupLocationControl();
 
-  [places, popularSearches] = await Promise.all([
-    loadPlaces(),
-    loadPopularSearches(),
-  ]);
+  places = await loadPlaces();
   setupMarkers();
   setupFilters();
   setupSearchSuggestions();
