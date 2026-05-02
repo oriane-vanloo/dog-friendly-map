@@ -318,6 +318,16 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Creatures of Habit Bar & Bandroom",
+    "address": "319 Brunswick St Fitzroy VIC 3065",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome inside and in the beer garden with treats behind the bar.",
+    "lat": -37.7975924,
+    "lng": 144.9783853,
+    "geocodeSource": "facebook+nominatim",
+    "instagramUrl": "https://www.instagram.com/creaturesofhabitbar/"
+  },
+  {
     "name": "Convent Bakery",
     "address": "1 St Heliers St Abbotsford VIC 3067",
     "category": "Cafe",
