@@ -1040,19 +1040,29 @@ function refreshMapLayout({ fitBounds = false } = {}) {
 
 function render({ fitBounds = false } = {}) {
   const filteredPlaces = getFilteredPlaces();
-  const selectedPlaceInView = filteredPlaces.find((place) => place.id === selectedPlaceId);
   renderMarkers(filteredPlaces);
   renderList(filteredPlaces);
   updateResultCount(filteredPlaces);
   updateFilterButtons();
-  renderSelectedPlace(selectedPlaceInView || places.find((place) => place.id === selectedPlaceId));
-  positionSelectedPlace(selectedPlaceInView);
+  syncSelectedPlacePanel();
 
   refreshMapLayout({ fitBounds });
 }
 
 function shouldUseBottomSheet() {
   return mobileMapQuery.matches;
+}
+
+function syncSelectedPlacePanel() {
+  const selectedPlaceInView = getFilteredPlaces().find((place) => place.id === selectedPlaceId);
+
+  if (shouldUseBottomSheet()) {
+    renderSelectedPlace(selectedPlaceInView || places.find((place) => place.id === selectedPlaceId));
+    positionSelectedPlace(selectedPlaceInView);
+  } else {
+    restoreSelectedPlacePosition();
+    renderSelectedPlace(null);
+  }
 }
 
 function selectPlace(place, { openPopup = false, pan = false, source = "unknown" } = {}) {
@@ -1260,7 +1270,7 @@ function updateMobileMapState({ fitBounds = false } = {}) {
     document.body.style.overflow = "";
   }
 
-  positionSelectedPlace(getFilteredPlaces().find((place) => place.id === selectedPlaceId));
+  syncSelectedPlacePanel();
   setMapInteractivity(true);
   refreshMapLayout({ fitBounds });
 }
