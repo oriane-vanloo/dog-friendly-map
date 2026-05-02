@@ -972,7 +972,7 @@ function renderList(filteredPlaces) {
       </span>
     </p>
     <p class="contact-copyright">
-      © Designed with ❤️ by
+      © Designed with 💖 by
       <a href="http://orianevanloo.site/" target="_blank" rel="noopener noreferrer">Oriane Van Loo</a>
     </p>
   `;
