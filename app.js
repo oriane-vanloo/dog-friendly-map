@@ -109,6 +109,7 @@ let placesLibraryPromise = null;
 let isMapExpanded = false;
 let isExpandedFilterSheetOpen = false;
 let searchAnalyticsTimeout = null;
+let lockedScrollY = 0;
 const mobileMapQuery = window.matchMedia("(max-width: 860px)");
 
 function initAnalytics() {
@@ -887,7 +888,13 @@ function restoreSelectedPlacePosition() {
 }
 
 function positionSelectedPlace(selectedPlaceInView) {
-  if (!mobileMapQuery.matches || isMapExpanded || !selectedPlaceInView) {
+  if (mobileMapQuery.matches && isMapExpanded) {
+    placeList.querySelectorAll(".selected-place-inline").forEach((slot) => slot.remove());
+    mapPanel.append(selectedPlace);
+    return;
+  }
+
+  if (!mobileMapQuery.matches || !selectedPlaceInView) {
     restoreSelectedPlacePosition();
     return;
   }
@@ -954,7 +961,7 @@ function renderList(filteredPlaces) {
   const contactItem = document.createElement("li");
   contactItem.className = "list-contact-card";
   contactItem.innerHTML = `
-    <p>
+    <p class="contact-copy">
       <span>Know a dog-friendly business not listed here?</span>
       <span class="contact-action">
         Reach out to
@@ -963,6 +970,10 @@ function renderList(filteredPlaces) {
           <span>kirathesmol</span>
         </a>
       </span>
+    </p>
+    <p class="contact-copyright">
+      © Designed with ❤️ by
+      <a href="http://orianevanloo.site/" target="_blank" rel="noopener noreferrer">Oriane Van Loo</a>
     </p>
   `;
   fragment.append(contactItem);
@@ -1280,12 +1291,42 @@ function setExpandedFilterSheet(open) {
   }
 }
 
+function setPageScrollLock(locked) {
+  if (locked) {
+    if (document.body.style.position === "fixed") {
+      return;
+    }
+
+    lockedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    return;
+  }
+
+  const scrollY = lockedScrollY;
+  document.documentElement.style.overflow = "";
+  document.body.style.overflow = "";
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.left = "";
+  document.body.style.right = "";
+  document.body.style.width = "";
+  lockedScrollY = 0;
+  window.scrollTo(0, scrollY);
+}
+
 function updateMobileMapState({ fitBounds = false } = {}) {
   const isMobile = mobileMapQuery.matches;
   const shouldExpandMap = isMobile && isMapExpanded;
 
   mapPanel.classList.toggle("is-expanded", shouldExpandMap);
   document.body.classList.toggle("map-expanded", shouldExpandMap);
+  document.documentElement.classList.toggle("map-expanded", shouldExpandMap);
 
   if (expandedSearchInput) {
     expandedSearchInput.value = searchInput.value;
@@ -1305,10 +1346,7 @@ function updateMobileMapState({ fitBounds = false } = {}) {
     ? '<img src="./assets/icons/x-closeicon.svg" alt="">'
     : '<img src="./assets/icons/expandicon.svg" alt="">';
 
-  if (!shouldExpandMap) {
-    document.documentElement.style.overflow = "";
-    document.body.style.overflow = "";
-  }
+  setPageScrollLock(shouldExpandMap);
 
   syncSelectedPlacePanel();
   setMapInteractivity(true);

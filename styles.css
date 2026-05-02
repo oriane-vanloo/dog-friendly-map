@@ -1106,7 +1106,7 @@ h1 {
   list-style: none;
 }
 
-.list-contact-card p {
+.contact-copy {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1114,6 +1114,14 @@ h1 {
   row-gap: 2px;
   margin: 0;
   font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.contact-copyright {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.45;
 }
@@ -1388,6 +1396,12 @@ h1 {
 }
 
 @media (max-width: 860px) {
+  html.map-expanded {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
   html,
   body {
     height: auto;
@@ -1396,7 +1410,10 @@ h1 {
   }
 
   body.map-expanded {
+    width: 100%;
+    height: 100svh;
     overflow: hidden;
+    overscroll-behavior: none;
   }
 
   body:not(.map-expanded) {
@@ -1409,6 +1426,12 @@ h1 {
     height: auto;
     flex-direction: column;
     overflow: visible;
+  }
+
+  body.map-expanded .app-shell {
+    height: 100svh;
+    min-height: 100svh;
+    overflow: hidden;
   }
 
   .map-panel {
@@ -1430,7 +1453,9 @@ h1 {
     height: 100svh;
     min-height: 100svh;
     padding: 0;
+    overflow: hidden;
     background: var(--background);
+    overscroll-behavior: none;
   }
 
   #map {
@@ -1455,6 +1480,11 @@ h1 {
     padding: 18px;
     overflow: visible;
     -webkit-overflow-scrolling: touch;
+  }
+
+  body.map-expanded .sidebar {
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .sidebar > * + * {
