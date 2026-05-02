@@ -1298,7 +1298,7 @@ function setupFilters() {
         active_category_count: activeCategories.size,
         filter_surface: currentMapSurface(),
       });
-      render({ fitBounds: true });
+      render();
     });
   });
 
