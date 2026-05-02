@@ -803,6 +803,16 @@
     "geocodeSource": "manual"
   },
   {
+    "name": "South of Johnston",
+    "address": "46 Oxford St Collingwood VIC 3066",
+    "category": "Cafe",
+    "description": "Dogs welcome in outdoor seating and a dog-friendly indoor area.",
+    "lat": -37.8060035,
+    "lng": 144.9846903,
+    "geocodeSource": "facebook+nominatim",
+    "instagramUrl": "https://www.instagram.com/southofjohnston/"
+  },
+  {
     "name": "Speakeasy Kitchen Bar",
     "address": "359 Chapel St South Yarra VIC 3141",
     "category": "Pub/Bar",
