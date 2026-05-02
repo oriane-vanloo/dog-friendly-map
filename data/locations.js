@@ -210,6 +210,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "facebook+nominatim"
   },
   {
+    "name": "Cavallini",
+    "address": "354 Queens Parade Fitzroy North VIC 3068",
+    "category": "Cafe",
+    "description": "Dogs welcome in the courtyard with treats available.",
+    "lat": -37.78803,
+    "lng": 144.99141,
+    "geocodeSource": "manual"
+  },
+  {
     "name": "Chris Gahan Reserve",
     "address": "19 Hornby St Windsor VIC 3181",
     "category": "Park",
@@ -244,6 +253,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.8370865,
     "lng": 145.0027238,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Coquette Clothes",
+    "address": "Rear 336 Queens Parade Fitzroy North VIC 3068",
+    "category": "Shop",
+    "description": "Dogs welcome in-store while browsing.",
+    "lat": -37.78825,
+    "lng": 144.99091,
+    "geocodeSource": "manual"
   },
   {
     "name": "Concrete Boots Bar",
@@ -352,6 +370,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.7660818,
     "lng": 144.9995388,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Fitzroy Town Hall Hotel",
+    "address": "166 Johnston St Fitzroy VIC 3065",
+    "category": "Pub/Bar",
+    "description": "Pups welcome in the public bar and outdoor deck with treats behind the bar.",
+    "lat": -37.7987104,
+    "lng": 144.9804853,
+    "geocodeSource": "facebook+manual"
   },
   {
     "name": "Flockhart Reserve",
@@ -471,6 +498,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "facebook+nominatim"
   },
   {
+    "name": "Joey Smalls",
+    "address": "284 Sydney Rd Brunswick VIC 3056",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the outdoor deck area.",
+    "lat": -37.771083,
+    "lng": 144.961764,
+    "geocodeSource": "manual"
+  },
+  {
     "name": "Jethro Canteen",
     "address": "385-389 Burnley St Richmond VIC 3121",
     "category": "Cafe",
@@ -523,6 +559,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.8451771,
     "lng": 145.0022051,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Le Gourmet Cakes",
+    "address": "271 Brunswick St Fitzroy VIC 3065",
+    "category": "Cafe",
+    "description": "Dogs welcome at this Brunswick Street cake cafe.",
+    "lat": -37.79928,
+    "lng": 144.97815,
+    "geocodeSource": "facebook+manual"
   },
   {
     "name": "Leonard's House of Love",
@@ -587,6 +632,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.7628862,
     "lng": 144.9792498,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Mitte Cafe",
+    "address": "76 Michael St Fitzroy North VIC 3068",
+    "category": "Cafe",
+    "description": "Dogs welcome at outdoor seating with treats available.",
+    "lat": -37.7857098,
+    "lng": 144.9893085,
+    "geocodeSource": "manual"
   },
   {
     "name": "Monty's Bar",
@@ -1041,6 +1095,15 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.8005789,
     "lng": 144.9793433,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "The Retreat Hotel",
+    "address": "280 Sydney Rd Brunswick VIC 3056",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the beer garden and outdoor seating.",
+    "lat": -37.771168,
+    "lng": 144.961609,
+    "geocodeSource": "facebook+manual"
   },
   {
     "name": "The Rose Hotel",
