@@ -910,7 +910,7 @@ function renderList(filteredPlaces) {
       <span>Know a dog-friendly business not listed here?</span>
       <span class="contact-action">
         Reach out to
-        <a href="https://www.instagram.com/kirathesmol" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.instagram.com/kirathesmol" target="_blank" rel="noopener noreferrer" data-analytics-link="kira-instagram">
           ${instagramIconHtml()}
           <span>kirathesmol</span>
         </a>
@@ -918,7 +918,7 @@ function renderList(filteredPlaces) {
     </p>
     <p class="contact-copyright">
       © Designed with 💖 by
-      <a href="http://orianevanloo.site/" target="_blank" rel="noopener noreferrer">Oriane Van Loo</a>
+      <a href="http://orianevanloo.site/" target="_blank" rel="noopener noreferrer" data-analytics-link="portfolio-website">Oriane Van Loo</a>
     </p>
   `;
   fragment.append(contactItem);
@@ -1422,9 +1422,10 @@ function setupActionTracking() {
     if (getThereLink) {
       const place = places.find((item) => item.id === getThereLink.dataset.placeId);
       if (place) {
-        trackEvent("get_there_click", {
+        trackEvent("google_maps_open", {
           ...placeAnalyticsParams(place),
           link_surface: currentMapSurface(),
+          link_url: getThereLink.href,
         });
       }
       return;
@@ -1434,17 +1435,29 @@ function setupActionTracking() {
     if (placeInstagramLink) {
       const place = places.find((item) => item.id === placeInstagramLink.dataset.placeId);
       if (place) {
-        trackEvent("instagram_click", {
+        trackEvent("business_instagram_open", {
           ...placeAnalyticsParams(place),
           link_surface: currentMapSurface(),
+          link_url: placeInstagramLink.href,
         });
       }
       return;
     }
 
-    if (event.target.closest(".list-contact-card a[href*='instagram.com']")) {
-      trackEvent("contact_instagram_click", {
+    const kiraInstagramLink = event.target.closest('[data-analytics-link="kira-instagram"]');
+    if (kiraInstagramLink) {
+      trackEvent("kira_instagram_open", {
         link_surface: "place_list",
+        link_url: kiraInstagramLink.href,
+      });
+      return;
+    }
+
+    const portfolioWebsiteLink = event.target.closest('[data-analytics-link="portfolio-website"]');
+    if (portfolioWebsiteLink) {
+      trackEvent("portfolio_website_open", {
+        link_surface: "place_list_footer",
+        link_url: portfolioWebsiteLink.href,
       });
     }
   });
