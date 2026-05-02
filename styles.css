@@ -1620,6 +1620,8 @@ h1 {
 
   .map-expand-toggle {
     display: grid;
+    right: 16px;
+    bottom: 72px;
   }
 
   .map-expand-toggle[hidden] {
@@ -1631,8 +1633,8 @@ h1 {
   }
 
   .map-locate-toggle {
-    right: 28px;
-    bottom: 84px;
+    right: 16px;
+    bottom: 16px;
     width: 44px;
     height: 44px;
     border: 1px solid rgba(226, 232, 240, 0.92);
@@ -1652,10 +1654,10 @@ h1 {
 
   .map-panel.is-expanded .map-locate-toggle {
     position: fixed;
-    z-index: 1940;
-    top: calc(env(safe-area-inset-top, 0px) + 84px);
+    z-index: 1880;
+    top: auto;
     right: 16px;
-    bottom: auto;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
     width: 52px;
     height: 52px;
     background: rgba(255, 255, 255, 0.94);
