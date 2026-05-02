@@ -15,7 +15,8 @@
     "description": "Dog-friendly outdoor beer garden and communal dining area.",
     "lat": -37.8098774,
     "lng": 144.9963564,
-    "geocodeSource": "nominatim"
+    "geocodeSource": "nominatim",
+    "instagramUrl": "https://www.instagram.com/abbots.yard/"
   },
   {
     "name": "Alimentari Fitzroy Delicatessen",
@@ -61,6 +62,214 @@
     "lat": -37.8027268,
     "lng": 144.9796112,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Armadale Reserve",
+    "address": "Between Sutherland Rd and Armadale St Armadale VIC 3143",
+    "category": "Park",
+    "description": "Designated off-lead reserve between Sutherland Road and Armadale Street.",
+    "lat": -37.8587855,
+    "lng": 145.0177327,
+    "geocodeSource": "stonnington+google-maps"
+  },
+  {
+    "name": "Ardrie Park",
+    "address": "Ardrie Park Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Dogs allowed off-lead on the oval only when sports grounds are not in use.",
+    "lat": -37.8791801,
+    "lng": 145.0538421,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Brookville Gardens",
+    "address": "Canterbury Rd Toorak VIC 3142",
+    "category": "Park",
+    "description": "Designated off-lead garden with dog waste bag dispenser.",
+    "lat": -37.8449845,
+    "lng": 145.0100376,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Central Park",
+    "address": "Corner Burke Rd and Wattletree Rd Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Dogs allowed off-lead on the oval only when sports grounds are not in use.",
+    "lat": -37.8651143,
+    "lng": 145.0502421,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Darling Park",
+    "address": "Dunlop St Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead park bordering Gardiners Creek.",
+    "lat": -37.8676645,
+    "lng": 145.0630805,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Gardiner Park",
+    "address": "Gardiner Park Glen Iris VIC 3146",
+    "category": "Park",
+    "description": "Designated off-lead park with dog drinking fountains.",
+    "lat": -37.8513504,
+    "lng": 145.048993,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Lumley Gardens",
+    "address": "Jessamine Ave Prahran VIC 3181",
+    "category": "Park",
+    "description": "Designated off-lead gardens with lawns and dog-friendly open space.",
+    "lat": -37.8575825,
+    "lng": 145.003432,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Malvern Cricket Ground",
+    "address": "Malvern Cricket Ground High St Malvern VIC 3144",
+    "category": "Park",
+    "description": "Dogs allowed off-lead on the oval when sports grounds are not in use.",
+    "lat": -37.8566614,
+    "lng": 145.0308975,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Milton Gray Reserve",
+    "address": "216 Wattletree Rd Malvern VIC 3144",
+    "category": "Park",
+    "description": "Dogs allowed off-lead from 5pm to 9am daily.",
+    "lat": -37.8634559,
+    "lng": 145.0353433,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Orrong Romanis Reserve",
+    "address": "603A Orrong Rd Armadale VIC 3181",
+    "category": "Park",
+    "description": "Designated off-lead reserve with grassed sports areas and drinking fountains.",
+    "lat": -37.8508079,
+    "lng": 145.0118769,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Percy Treyvaud Memorial Park",
+    "address": "Percy Treyvaud Memorial Park Chadstone Rd Chadstone VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead reserve; keep dogs off sports grounds during organised activities.",
+    "lat": -37.8828579,
+    "lng": 145.0805456,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Peverill Park",
+    "address": "16 Peverill St Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead park with large passive grass area.",
+    "lat": -37.879821,
+    "lng": 145.0864767,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Princes Gardens",
+    "address": "Little Chapel St Prahran VIC 3181",
+    "category": "Park",
+    "description": "Designated off-lead gardens with drinking fountains.",
+    "lat": -37.8483542,
+    "lng": 144.9949491,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Sir Robert Menzies Reserve",
+    "address": "714 Toorak Rd Malvern VIC 3144",
+    "category": "Park",
+    "description": "Designated off-lead reserve with paved walking trails and drinking fountains.",
+    "lat": -37.8450766,
+    "lng": 145.0360741,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Sir Zelman Cowen Park",
+    "address": "Sir Zelman Cowen Park Talbot Crescent Kooyong VIC 3144",
+    "category": "Park",
+    "description": "Designated off-lead park; keep dogs off sports grounds during organised activities.",
+    "lat": -37.8396156,
+    "lng": 145.0376243,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Surrey Park",
+    "address": "67-73 Surrey Rd South Yarra VIC 3141",
+    "category": "Park",
+    "description": "Designated off-lead park with dog waste bags and drinking fountains.",
+    "lat": -37.8425684,
+    "lng": 144.9985345,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Sydare Reserve",
+    "address": "Waverley Rd and Sydare Ave Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead reserve at Waverley Road and Sydare Avenue.",
+    "lat": -37.8799475,
+    "lng": 145.0748947,
+    "geocodeSource": "stonnington+google-maps"
+  },
+  {
+    "name": "Tooronga Park",
+    "address": "317 Tooronga Rd Glen Iris VIC 3146",
+    "category": "Park",
+    "description": "Designated off-lead park with entries from Toorak Road, Milton Parade and Tooronga Road.",
+    "lat": -37.8474559,
+    "lng": 145.0407055,
+    "geocodeSource": "stonnington+google-maps"
+  },
+  {
+    "name": "Union Street Gardens",
+    "address": "Corner Union St and Orchard St Armadale VIC 3143",
+    "category": "Park",
+    "description": "Dogs allowed off-lead from 5pm to 9am daily.",
+    "lat": -37.8588137,
+    "lng": 145.0229143,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Victory Square Reserve",
+    "address": "Ashleigh St Armadale VIC 3143",
+    "category": "Park",
+    "description": "Designated off-lead reserve on Ashleigh Street.",
+    "lat": -37.8527867,
+    "lng": 145.0140305,
+    "geocodeSource": "stonnington+google-maps"
+  },
+  {
+    "name": "Waverley Park",
+    "address": "Corner Waverley Rd and Sycamore St Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead park with dog park area and picnic seating.",
+    "lat": -37.8795657,
+    "lng": 145.0696756,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Windsor Siding",
+    "address": "104 Union St Windsor VIC 3181",
+    "category": "Park",
+    "description": "Designated off-lead reserve between Union and Peel streets.",
+    "lat": -37.8543718,
+    "lng": 144.9893011,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Augie's Place",
+    "address": "460 Victoria St Brunswick VIC 3056",
+    "category": "Cafe",
+    "description": "Dog-friendly cafe with dog treats and drinks.",
+    "instagramUrl": "https://www.instagram.com/augiesplace/",
+    "lat": -37.7657742,
+    "lng": 144.9506522,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "Babble Bar & Cafe",
@@ -187,6 +396,16 @@
     "lat": -37.8395769,
     "lng": 144.9877442,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Carwyn Cellars",
+    "address": "877 High St Thornbury VIC 3071",
+    "category": "Pub/Bar",
+    "description": "Dog-friendly beer garden and outdoor seating.",
+    "instagramUrl": "https://www.instagram.com/carwyncellars/",
+    "lat": -37.7540179,
+    "lng": 145.0012079,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "Cavallini",
@@ -324,6 +543,15 @@
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Faraday's Cage",
+    "address": "325-329 Gore St Fitzroy VIC 3065",
+    "category": "Cafe",
+    "description": "Dog-friendly cafe with outdoor seating.",
+    "lat": -37.7993754,
+    "lng": 144.9827654,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Fawkner Park",
     "address": "24-88 Commercial Rd South Yarra VIC 3141",
     "category": "Park",
@@ -406,6 +634,15 @@
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Greensleeves Coffee House",
+    "address": "100 Scotchmer St Fitzroy North VIC 3068",
+    "category": "Cafe",
+    "description": "Dogs welcome at outdoor seating and courtyard tables.",
+    "lat": -37.7832356,
+    "lng": 144.9821608,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Hachi Dog Boutique & Spa",
     "address": "16A Toorak Rd South Yarra VIC 3141",
     "category": "Shop",
@@ -449,6 +686,15 @@
     "lat": -37.82963,
     "lng": 144.97574,
     "geocodeSource": "manual"
+  },
+  {
+    "name": "Jerry Joy Cafe",
+    "address": "128 Mansfield St Thornbury VIC 3071",
+    "category": "Cafe",
+    "description": "Dog-friendly covered courtyard and outdoor area.",
+    "lat": -37.7574685,
+    "lng": 145.0097801,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "Joey Smalls",
@@ -822,6 +1068,15 @@
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Sporting Club Hotel",
+    "address": "27 Weston St Brunswick VIC 3056",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the front bar, beer garden and outdoor seating.",
+    "lat": -37.7748361,
+    "lng": 144.9632853,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Stillman Cafe",
     "address": "237 Burnley St Richmond VIC 3121",
     "category": "Cafe",
@@ -831,13 +1086,43 @@
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Stomping Ground Brewery & Beer Hall",
+    "address": "100 Gipps St Collingwood VIC 3066",
+    "category": "Pub/Bar",
+    "description": "Leashed dogs welcome in the heated undercover courtyard.",
+    "instagramUrl": "https://www.instagram.com/stompinggroundbeer/",
+    "lat": -37.8045616,
+    "lng": 144.9908005,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "Sugar Glider Bar",
     "address": "56 Johnston St Fitzroy VIC 3065",
     "category": "Pub/Bar",
     "description": "Dog-friendly bar with outdoor seating.",
+    "instagramUrl": "https://www.instagram.com/sugargliderbar/",
     "lat": -37.7983041,
     "lng": 144.9765237,
     "geocodeSource": "csv"
+  },
+  {
+    "name": "Taita's Lebanese Kitchen",
+    "address": "73 Clarendon St Thornbury VIC 3071",
+    "category": "Cafe",
+    "description": "Dogs welcome in the patio courtyard.",
+    "lat": -37.7598919,
+    "lng": 145.0052674,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
+    "name": "Tallboy & Moose",
+    "address": "270 Raglan St Preston VIC 3072",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome indoors and on the patio with dog bowls.",
+    "instagramUrl": "https://www.instagram.com/tallboyandmoose/",
+    "lat": -37.7486826,
+    "lng": 145.0028763,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "Tall Timber Cafe",
@@ -939,6 +1224,16 @@
     "geocodeSource": "nominatim"
   },
   {
+    "name": "The Keys",
+    "address": "1/188 Plenty Rd Preston VIC 3072",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the courtyard.",
+    "instagramUrl": "https://www.instagram.com/thekeyspreston/",
+    "lat": -37.7468183,
+    "lng": 145.0058527,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "The Local Taphouse",
     "address": "184 Carlisle St St Kilda East VIC 3183",
     "category": "Pub/Bar",
@@ -1021,6 +1316,16 @@
     "geocodeSource": "facebook+manual"
   },
   {
+    "name": "The Rose Hotel",
+    "address": "406 Napier St Fitzroy VIC 3065",
+    "category": "Pub/Bar",
+    "description": "Dog-friendly Fitzroy pub with treats behind the bar.",
+    "instagramUrl": "https://www.instagram.com/therosefitzroy/",
+    "lat": -37.7955345,
+    "lng": 144.9815065,
+    "geocodeSource": "facebook+nominatim"
+  },
+  {
     "name": "The Shady Lady",
     "address": "36 Johnston St Fitzroy VIC 3065",
     "category": "Pub/Bar",
@@ -1064,6 +1369,15 @@
     "lat": -37.83525,
     "lng": 144.945172,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "The Tramway Hotel",
+    "address": "165 Rae St Fitzroy North VIC 3068",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the small courtyard.",
+    "lat": -37.7885137,
+    "lng": 144.9789774,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "Uitgang Bar",
@@ -1118,6 +1432,15 @@
     "lat": -37.7646905,
     "lng": 144.9999947,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Wesley Anne",
+    "address": "250 High St Northcote VIC 3070",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome on the front and rear patios.",
+    "lat": -37.7729134,
+    "lng": 144.9984324,
+    "geocodeSource": "facebook+nominatim"
   },
   {
     "name": "West Beach Bathers Pavilion",

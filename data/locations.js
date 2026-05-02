@@ -64,6 +64,204 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Armadale Reserve",
+    "address": "Between Sutherland Rd and Armadale St Armadale VIC 3143",
+    "category": "Park",
+    "description": "Designated off-lead reserve between Sutherland Road and Armadale Street.",
+    "lat": -37.8587855,
+    "lng": 145.0177327,
+    "geocodeSource": "stonnington+google-maps"
+  },
+  {
+    "name": "Ardrie Park",
+    "address": "Ardrie Park Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Dogs allowed off-lead on the oval only when sports grounds are not in use.",
+    "lat": -37.8791801,
+    "lng": 145.0538421,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Brookville Gardens",
+    "address": "Canterbury Rd Toorak VIC 3142",
+    "category": "Park",
+    "description": "Designated off-lead garden with dog waste bag dispenser.",
+    "lat": -37.8449845,
+    "lng": 145.0100376,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Central Park",
+    "address": "Corner Burke Rd and Wattletree Rd Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Dogs allowed off-lead on the oval only when sports grounds are not in use.",
+    "lat": -37.8651143,
+    "lng": 145.0502421,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Darling Park",
+    "address": "Dunlop St Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead park bordering Gardiners Creek.",
+    "lat": -37.8676645,
+    "lng": 145.0630805,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Gardiner Park",
+    "address": "Gardiner Park Glen Iris VIC 3146",
+    "category": "Park",
+    "description": "Designated off-lead park with dog drinking fountains.",
+    "lat": -37.8513504,
+    "lng": 145.048993,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Lumley Gardens",
+    "address": "Jessamine Ave Prahran VIC 3181",
+    "category": "Park",
+    "description": "Designated off-lead gardens with lawns and dog-friendly open space.",
+    "lat": -37.8575825,
+    "lng": 145.003432,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Malvern Cricket Ground",
+    "address": "Malvern Cricket Ground High St Malvern VIC 3144",
+    "category": "Park",
+    "description": "Dogs allowed off-lead on the oval when sports grounds are not in use.",
+    "lat": -37.8566614,
+    "lng": 145.0308975,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Milton Gray Reserve",
+    "address": "216 Wattletree Rd Malvern VIC 3144",
+    "category": "Park",
+    "description": "Dogs allowed off-lead from 5pm to 9am daily.",
+    "lat": -37.8634559,
+    "lng": 145.0353433,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Orrong Romanis Reserve",
+    "address": "603A Orrong Rd Armadale VIC 3181",
+    "category": "Park",
+    "description": "Designated off-lead reserve with grassed sports areas and drinking fountains.",
+    "lat": -37.8508079,
+    "lng": 145.0118769,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Percy Treyvaud Memorial Park",
+    "address": "Percy Treyvaud Memorial Park Chadstone Rd Chadstone VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead reserve; keep dogs off sports grounds during organised activities.",
+    "lat": -37.8828579,
+    "lng": 145.0805456,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Peverill Park",
+    "address": "16 Peverill St Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead park with large passive grass area.",
+    "lat": -37.879821,
+    "lng": 145.0864767,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Princes Gardens",
+    "address": "Little Chapel St Prahran VIC 3181",
+    "category": "Park",
+    "description": "Designated off-lead gardens with drinking fountains.",
+    "lat": -37.8483542,
+    "lng": 144.9949491,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Sir Robert Menzies Reserve",
+    "address": "714 Toorak Rd Malvern VIC 3144",
+    "category": "Park",
+    "description": "Designated off-lead reserve with paved walking trails and drinking fountains.",
+    "lat": -37.8450766,
+    "lng": 145.0360741,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Sir Zelman Cowen Park",
+    "address": "Sir Zelman Cowen Park Talbot Crescent Kooyong VIC 3144",
+    "category": "Park",
+    "description": "Designated off-lead park; keep dogs off sports grounds during organised activities.",
+    "lat": -37.8396156,
+    "lng": 145.0376243,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Surrey Park",
+    "address": "67-73 Surrey Rd South Yarra VIC 3141",
+    "category": "Park",
+    "description": "Designated off-lead park with dog waste bags and drinking fountains.",
+    "lat": -37.8425684,
+    "lng": 144.9985345,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Sydare Reserve",
+    "address": "Waverley Rd and Sydare Ave Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead reserve at Waverley Road and Sydare Avenue.",
+    "lat": -37.8799475,
+    "lng": 145.0748947,
+    "geocodeSource": "stonnington+google-maps"
+  },
+  {
+    "name": "Tooronga Park",
+    "address": "317 Tooronga Rd Glen Iris VIC 3146",
+    "category": "Park",
+    "description": "Designated off-lead park with entries from Toorak Road, Milton Parade and Tooronga Road.",
+    "lat": -37.8474559,
+    "lng": 145.0407055,
+    "geocodeSource": "stonnington+google-maps"
+  },
+  {
+    "name": "Union Street Gardens",
+    "address": "Corner Union St and Orchard St Armadale VIC 3143",
+    "category": "Park",
+    "description": "Dogs allowed off-lead from 5pm to 9am daily.",
+    "lat": -37.8588137,
+    "lng": 145.0229143,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Victory Square Reserve",
+    "address": "Ashleigh St Armadale VIC 3143",
+    "category": "Park",
+    "description": "Designated off-lead reserve on Ashleigh Street.",
+    "lat": -37.8527867,
+    "lng": 145.0140305,
+    "geocodeSource": "stonnington+google-maps"
+  },
+  {
+    "name": "Waverley Park",
+    "address": "Corner Waverley Rd and Sycamore St Malvern East VIC 3145",
+    "category": "Park",
+    "description": "Designated off-lead park with dog park area and picnic seating.",
+    "lat": -37.8795657,
+    "lng": 145.0696756,
+    "geocodeSource": "stonnington"
+  },
+  {
+    "name": "Windsor Siding",
+    "address": "104 Union St Windsor VIC 3181",
+    "category": "Park",
+    "description": "Designated off-lead reserve between Union and Peel streets.",
+    "lat": -37.8543718,
+    "lng": 144.9893011,
+    "geocodeSource": "stonnington"
+  },
+  {
     "name": "Augie's Place",
     "address": "460 Victoria St Brunswick VIC 3056",
     "category": "Cafe",
