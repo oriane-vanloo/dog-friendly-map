@@ -82,6 +82,7 @@ const searchSuggestionPanels = [...document.querySelectorAll("[data-search-sugge
 const mapElement = document.querySelector("#map");
 const mapPanel = document.querySelector(".map-panel");
 const mapExpandToggle = document.querySelector("#mapExpandToggle");
+const mapLocateToggle = document.querySelector("#mapLocateToggle");
 const desktopZoomIn = document.querySelector("#desktopZoomIn");
 const desktopZoomOut = document.querySelector("#desktopZoomOut");
 const expandedMapHome = document.querySelector("#expandedMapHome");
@@ -106,6 +107,8 @@ let mapRefreshFrame = null;
 let shouldFitBoundsOnRefresh = false;
 let googleMapsScriptPromise = null;
 let placesLibraryPromise = null;
+let userLocationMarker = null;
+let userLocationAccuracy = null;
 let isMapExpanded = false;
 let isExpandedFilterSheetOpen = false;
 let searchAnalyticsTimeout = null;
@@ -1625,6 +1628,94 @@ function setupDesktopZoomControls() {
   updateDesktopZoomControls();
 }
 
+function showUserLocation(position) {
+  const { latitude, longitude, accuracy } = position.coords;
+  const latLng = [latitude, longitude];
+  const zoom = Math.max(map.getZoom(), 15);
+
+  if (!userLocationAccuracy) {
+    userLocationAccuracy = L.circle(latLng, {
+      radius: Math.min(Number(accuracy) || 0, 1200),
+      stroke: false,
+      fillColor: "#FF9BAB",
+      fillOpacity: 0.14,
+      interactive: false,
+    }).addTo(map);
+  } else {
+    userLocationAccuracy.setLatLng(latLng);
+    userLocationAccuracy.setRadius(Math.min(Number(accuracy) || 0, 1200));
+  }
+
+  if (!userLocationMarker) {
+    userLocationMarker = L.circleMarker(latLng, {
+      radius: 7,
+      color: "#FFFFFF",
+      weight: 3,
+      fillColor: "#FF9BAB",
+      fillOpacity: 1,
+      interactive: false,
+    }).addTo(map);
+  } else {
+    userLocationMarker.setLatLng(latLng);
+  }
+
+  map.flyTo(latLng, zoom, { duration: 0.65 });
+}
+
+function setLocateButtonLoading(isLoading) {
+  if (!mapLocateToggle) {
+    return;
+  }
+
+  mapLocateToggle.disabled = isLoading;
+  mapLocateToggle.classList.toggle("is-loading", isLoading);
+  mapLocateToggle.setAttribute("aria-busy", String(isLoading));
+}
+
+function setupLocationControl() {
+  if (!mapLocateToggle) {
+    return;
+  }
+
+  if (!navigator.geolocation) {
+    mapLocateToggle.disabled = true;
+    mapLocateToggle.setAttribute("aria-label", "Location is not available in this browser");
+    return;
+  }
+
+  mapLocateToggle.addEventListener("click", () => {
+    setLocateButtonLoading(true);
+    mapLocateToggle.classList.remove("is-error");
+    trackEvent("map_locate_click", {
+      map_surface: currentMapSurface(),
+    });
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocateButtonLoading(false);
+        showUserLocation(position);
+        trackEvent("map_locate_success", {
+          map_surface: currentMapSurface(),
+        });
+      },
+      (error) => {
+        setLocateButtonLoading(false);
+        mapLocateToggle.classList.add("is-error");
+        window.setTimeout(() => mapLocateToggle.classList.remove("is-error"), 1200);
+        trackEvent("map_locate_error", {
+          map_surface: currentMapSurface(),
+          error_code: error.code,
+        });
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 60000,
+        timeout: 10000,
+      }
+    );
+  });
+}
+
 function setupMapResizeHandling() {
   const refresh = () => refreshMapLayout();
 
@@ -1702,6 +1793,7 @@ async function init() {
   setupMapResizeHandling();
   setupMobileMapToggle();
   setupDesktopZoomControls();
+  setupLocationControl();
 
   [places, popularSearches] = await Promise.all([
     loadPlaces(),
