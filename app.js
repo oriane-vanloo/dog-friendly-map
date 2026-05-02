@@ -1065,6 +1065,46 @@ function syncSelectedPlacePanel() {
   }
 }
 
+function keepSelectedCardVisible({ behavior = "smooth" } = {}) {
+  if (!selectedPlaceId || isMapExpanded) {
+    return;
+  }
+
+  const selectedCard = placeList.querySelector(".place-card.selected");
+  if (!selectedCard) {
+    return;
+  }
+
+  const cardRect = selectedCard.getBoundingClientRect();
+  const padding = 16;
+
+  if (mobileMapQuery.matches) {
+    const topLimit = padding;
+    const bottomLimit = window.innerHeight - padding;
+
+    if (cardRect.top < topLimit || cardRect.bottom > bottomLimit) {
+      selectedCard.scrollIntoView({ behavior, block: "nearest" });
+    }
+    return;
+  }
+
+  const listRect = placeList.getBoundingClientRect();
+  const topLimit = listRect.top + padding;
+  const bottomLimit = listRect.bottom - padding;
+
+  if (cardRect.top < topLimit) {
+    placeList.scrollBy({
+      top: cardRect.top - topLimit,
+      behavior,
+    });
+  } else if (cardRect.bottom > bottomLimit) {
+    placeList.scrollBy({
+      top: cardRect.bottom - bottomLimit,
+      behavior,
+    });
+  }
+}
+
 function selectPlace(place, { openPopup = false, pan = false, source = "unknown" } = {}) {
   selectedPlaceId = place.id;
   render();
@@ -1299,6 +1339,7 @@ function setupFilters() {
         filter_surface: currentMapSurface(),
       });
       render();
+      keepSelectedCardVisible();
     });
   });
 
