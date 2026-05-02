@@ -378,7 +378,8 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "description": "Pups welcome in the public bar and outdoor deck with treats behind the bar.",
     "lat": -37.7987104,
     "lng": 144.9804853,
-    "geocodeSource": "facebook+manual"
+    "geocodeSource": "facebook+manual",
+    "instagramUrl": "https://www.instagram.com/fitzroytownhallhotel/"
   },
   {
     "name": "Flockhart Reserve",
@@ -1076,7 +1077,8 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "description": "Dogs welcome in street seating and covered courtyard.",
     "lat": -37.8028466,
     "lng": 144.9970225,
-    "geocodeSource": "nominatim"
+    "geocodeSource": "nominatim",
+    "instagramUrl": "https://www.instagram.com/parkhotelabbotsford/"
   },
   {
     "name": "The Punters Club",
