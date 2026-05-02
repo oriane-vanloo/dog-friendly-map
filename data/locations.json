@@ -1477,5 +1477,626 @@
     "lat": -37.8551783,
     "lng": 144.9927429,
     "geocodeSource": "manual"
+  },
+  {
+    "name": "Alphington Park",
+    "address": "28 Parkview Rd Alphington VIC 3078",
+    "category": "Park",
+    "description": "Dogs allowed off-leash before 10am and after 5pm.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.78405,
+    "lng": 145.0298326
+  },
+  {
+    "name": "Annette's Place",
+    "address": "5 River St Richmond VIC 3121",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve near the Yarra River.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.814488,
+    "lng": 145.0138422
+  },
+  {
+    "name": "Burnley Park",
+    "address": "150 Yarra Blvd Richmond VIC 3121",
+    "category": "Park",
+    "description": "Dog off-leash area; dogs prohibited on sports grounds during organised sport.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.8250151,
+    "lng": 145.0147064
+  },
+  {
+    "name": "Coate Park",
+    "address": "14 Yarraford Ave Alphington VIC 3078",
+    "category": "Park",
+    "description": "Dog off-leash area in the northern section of the park.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7856007,
+    "lng": 145.0226996
+  },
+  {
+    "name": "Coulson Reserve",
+    "address": "1 Heidelberg Rd Clifton Hill VIC 3068",
+    "category": "Park",
+    "description": "Dogs allowed off-leash on unfenced sports grounds when not in use.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7858895,
+    "lng": 144.997391
+  },
+  {
+    "name": "Dame Nellie Melba Memorial Park",
+    "address": "Coppin St Richmond VIC 3121",
+    "category": "Park",
+    "description": "Dogs allowed off-leash before 9am and after 5pm.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.821448,
+    "lng": 145.0029281
+  },
+  {
+    "name": "Fairfield Park",
+    "address": "Fairfield Park Dr Fairfield VIC 3078",
+    "category": "Park",
+    "description": "Dogs allowed off-leash when sports grounds are not in use.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7856515,
+    "lng": 145.0123632
+  },
+  {
+    "name": "Golden Square Bicentennial Park",
+    "address": "Madden Grove Burnley VIC 3121",
+    "category": "Park",
+    "description": "Dogs allowed off-leash away from playgrounds, barbecues and picnic areas.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.8285049,
+    "lng": 145.0100074
+  },
+  {
+    "name": "Hall Reserve",
+    "address": "The Esplanade Clifton Hill VIC 3068",
+    "category": "Park",
+    "description": "Dogs allowed off-leash away from playgrounds.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7866691,
+    "lng": 145.0054576
+  },
+  {
+    "name": "Hardy Gallagher Reserve",
+    "address": "21 Solly Ave Princes Hill VIC 3054",
+    "category": "Park",
+    "description": "Dogs allowed off-leash away from playgrounds and community growing areas.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7795124,
+    "lng": 144.9657902
+  },
+  {
+    "name": "Kevin Bartlett Reserve",
+    "address": "F R Smith Dr Burnley VIC 3121",
+    "category": "Park",
+    "description": "Dogs allowed off-leash when sports grounds are not in use.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.8318228,
+    "lng": 145.0249649
+  },
+  {
+    "name": "Langdon Reserve",
+    "address": "Corner Nicholson St and Miller St Fitzroy North VIC 3068",
+    "category": "Park",
+    "description": "Dog off-leash park except within the playground.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7767846,
+    "lng": 144.9791592
+  },
+  {
+    "name": "Linear Parklands",
+    "address": "100 Rushall Crescent Fitzroy North VIC 3068",
+    "category": "Park",
+    "description": "Dogs allowed off-leash away from the shared trail and 5 metres either side.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7833268,
+    "lng": 144.9910706
+  },
+  {
+    "name": "Ramsden Street Reserve",
+    "address": "110 Field St Clifton Hill VIC 3068",
+    "category": "Park",
+    "description": "Dogs allowed off-leash on unfenced sports grounds when not in use.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7921898,
+    "lng": 145.0033601
+  },
+  {
+    "name": "T H Westfield Reserve",
+    "address": "Corner Yarra Bend Rd and Heidelberg Rd Clifton Hill VIC 3068",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve with leash restrictions near picnic areas and paths.",
+    "geocodeSource": "yarra+manual",
+    "lat": -37.7896861,
+    "lng": 145.0088944
+  },
+  {
+    "name": "Yarra Bend Park",
+    "address": "Yarra Bend Rd Fairfield VIC 3078",
+    "category": "Park",
+    "description": "Includes designated dog off-leash areas.",
+    "geocodeSource": "yarra+nominatim",
+    "lat": -37.7937526,
+    "lng": 145.0107027
+  },
+  {
+    "name": "Canning and Neill Street Reserve",
+    "address": "2 Neill St Carlton VIC 3053",
+    "category": "Park",
+    "description": "Timed dog off-leash area.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.7930779,
+    "lng": 144.9739746
+  },
+  {
+    "name": "Clayton Reserve",
+    "address": "204 Macaulay Rd North Melbourne VIC 3051",
+    "category": "Park",
+    "description": "Large fenced dog off-leash park.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.7960118,
+    "lng": 144.9390709
+  },
+  {
+    "name": "Gosch's Paddock",
+    "address": "Olympic Blvd Melbourne VIC 3004",
+    "category": "Park",
+    "description": "Dogs allowed off-leash in grassy areas between the ovals.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.8259527,
+    "lng": 144.9868017
+  },
+  {
+    "name": "Kings Way and Moray Street Reserve",
+    "address": "Moray St Southbank VIC 3006",
+    "category": "Park",
+    "description": "Fully fenced off-leash dog park with dog play equipment and drinking fountain.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.8271239,
+    "lng": 144.9606687
+  },
+  {
+    "name": "North Melbourne Recreation Reserve",
+    "address": "204-206 Arden St North Melbourne VIC 3051",
+    "category": "Park",
+    "description": "Dog off-leash area around Arden Oval.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.7991416,
+    "lng": 144.9414086
+  },
+  {
+    "name": "Point Park",
+    "address": "104 Lorimer St Docklands VIC 3008",
+    "category": "Park",
+    "description": "Timed dog off-leash lawns near Yarra's Edge.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.8234676,
+    "lng": 144.9411745
+  },
+  {
+    "name": "Princes Park",
+    "address": "Bowen Crescent Carlton North VIC 3054",
+    "category": "Park",
+    "description": "Designated off-leash areas including Crawford Oval and Bowen Crescent.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.7837511,
+    "lng": 144.9618312
+  },
+  {
+    "name": "Riverside Park",
+    "address": "93-95 The Crescent Kensington VIC 3031",
+    "category": "Park",
+    "description": "Timed dog off-leash area.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.7631022,
+    "lng": 144.8912392
+  },
+  {
+    "name": "Royal Park South",
+    "address": "Macarthur Rd Parkville VIC 3052",
+    "category": "Park",
+    "description": "Council-listed dog off-leash area south of Macarthur Road.",
+    "geocodeSource": "melbourne+nominatim",
+    "lat": -37.7881362,
+    "lng": 144.954963
+  },
+  {
+    "name": "Alma Park",
+    "address": "150 Dandenong Rd St Kilda East VIC 3183",
+    "category": "Park",
+    "description": "Designated dog off-leash areas in Alma Park West and north of the oval in Alma Park East.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8582927,
+    "lng": 144.9936156
+  },
+  {
+    "name": "Eastern Reserve",
+    "address": "141 Park St South Melbourne VIC 3205",
+    "category": "Park",
+    "description": "Eastern Reserve North is a fenced dog off-leash park.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8344728,
+    "lng": 144.965799
+  },
+  {
+    "name": "Elwood Park and Foreshore",
+    "address": "Ormond Esplanade Elwood VIC 3184",
+    "category": "Park",
+    "description": "Large foreshore park with designated dog off-leash areas.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8909895,
+    "lng": 144.9904094
+  },
+  {
+    "name": "Garden City Reserve",
+    "address": "Beacon Rd and Crichton Ave Port Melbourne VIC 3207",
+    "category": "Park",
+    "description": "Dogs permitted off-leash away from the playground.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8365345,
+    "lng": 144.9298458
+  },
+  {
+    "name": "Gasworks Arts Park",
+    "address": "21 Graham St Albert Park VIC 3206",
+    "category": "Park",
+    "description": "Council-listed dog off-leash arts park.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8424949,
+    "lng": 144.9469359
+  },
+  {
+    "name": "Howe Reserve",
+    "address": "Corner Station St and Ingles St Port Melbourne VIC 3207",
+    "category": "Park",
+    "description": "Reserve with a council-listed dog off-leash area.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8328858,
+    "lng": 144.9447551
+  },
+  {
+    "name": "Lagoon Reserve",
+    "address": "Graham St Port Melbourne VIC 3207",
+    "category": "Park",
+    "description": "Dogs permitted off-leash away from playground and picnic areas.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8410977,
+    "lng": 144.9443465
+  },
+  {
+    "name": "Moran Reserve",
+    "address": "Marine Parade St Kilda VIC 3182",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve on Marine Parade.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8687513,
+    "lng": 144.9756163
+  },
+  {
+    "name": "Peanut Farm Reserve",
+    "address": "Corner Chaucer St and Blessington St St Kilda VIC 3182",
+    "category": "Park",
+    "description": "Dog off-leash sports reserve; check temporary sportsground closures.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8700115,
+    "lng": 144.9785777
+  },
+  {
+    "name": "R.F. Julier Reserve",
+    "address": "Corner Dunstan Parade and Edina Ave Port Melbourne VIC 3207",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve with paths and picnic areas.",
+    "geocodeSource": "port-phillip+nominatim",
+    "lat": -37.8378376,
+    "lng": 144.9227001
+  },
+  {
+    "name": "A G Gillon Oval",
+    "address": "78 Pearson St Brunswick VIC 3056",
+    "category": "Park",
+    "description": "Council-listed dog off-leash area.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7642566,
+    "lng": 144.9499027
+  },
+  {
+    "name": "Abrahams Reserve",
+    "address": "50-72 Harrison St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7585419,
+    "lng": 144.9805399
+  },
+  {
+    "name": "Balfe Park",
+    "address": "54-64 John St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7745266,
+    "lng": 144.9775218
+  },
+  {
+    "name": "Brady Reserve",
+    "address": "229 Hope St Brunswick West VIC 3055",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7628603,
+    "lng": 144.9386904
+  },
+  {
+    "name": "Clifton Park",
+    "address": "377 Albert St Brunswick VIC 3056",
+    "category": "Park",
+    "description": "Council-listed dog off-leash park.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7668702,
+    "lng": 144.9541198
+  },
+  {
+    "name": "Dunstan Reserve",
+    "address": "24 Peacock St Brunswick West VIC 3055",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7548657,
+    "lng": 144.9400639
+  },
+  {
+    "name": "Fleming Park",
+    "address": "47-51 Albert St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7692087,
+    "lng": 144.9758939
+  },
+  {
+    "name": "Fraser Reserve",
+    "address": "16-24 Hopetoun Ave Brunswick West VIC 3055",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7552208,
+    "lng": 144.9356804
+  },
+  {
+    "name": "Gilpin Park",
+    "address": "348-374 Albert St Brunswick VIC 3056",
+    "category": "Park",
+    "description": "Council-listed off-leash park with enclosed dog park area.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7686088,
+    "lng": 144.950198
+  },
+  {
+    "name": "Holbrook Reserve",
+    "address": "8 Jewell Crescent Brunswick West VIC 3055",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7702694,
+    "lng": 144.9361781
+  },
+  {
+    "name": "Jones Park",
+    "address": "9-23 Albion St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7618722,
+    "lng": 144.9794161
+  },
+  {
+    "name": "Kirkdale Park",
+    "address": "31 Kirkdale St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7701943,
+    "lng": 144.9834741
+  },
+  {
+    "name": "Methven Park",
+    "address": "7 Methven St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7715051,
+    "lng": 144.9732623
+  },
+  {
+    "name": "Phillips Reserve",
+    "address": "2-10 Weigall St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.768406,
+    "lng": 144.9839986
+  },
+  {
+    "name": "Reaburn Reserve",
+    "address": "72 Pearson St Brunswick VIC 3056",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7645525,
+    "lng": 144.9496529
+  },
+  {
+    "name": "Roberts Reserve",
+    "address": "50-72 Harrison St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7610966,
+    "lng": 144.9817953
+  },
+  {
+    "name": "Sheils Reserve",
+    "address": "306 Hope St Brunswick West VIC 3055",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7608016,
+    "lng": 144.9400933
+  },
+  {
+    "name": "Sumner Park",
+    "address": "3 Alister St Brunswick East VIC 3057",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.7741846,
+    "lng": 144.9855827
+  },
+  {
+    "name": "Wylie Reserve",
+    "address": "256-264 Union St Brunswick West VIC 3055",
+    "category": "Park",
+    "description": "Council-listed dog off-leash reserve.",
+    "geocodeSource": "merri-bek+nominatim",
+    "lat": -37.771447,
+    "lng": 144.9439548
+  },
+  {
+    "name": "All Nations Park",
+    "address": "Separation St Northcote VIC 3070",
+    "category": "Park",
+    "description": "Dogs off-lead only in the designated area off Brickworks Lane.",
+    "geocodeSource": "darebin+nominatim",
+    "lat": -37.7679679,
+    "lng": 145.0055364
+  },
+  {
+    "name": "Hayes Park",
+    "address": "143 Flinders St Thornbury VIC 3071",
+    "category": "Park",
+    "description": "Council-listed dog off-lead park.",
+    "geocodeSource": "darebin+nominatim",
+    "lat": -37.7571202,
+    "lng": 145.0179595
+  },
+  {
+    "name": "Henderson Park",
+    "address": "3 Watt St Thornbury VIC 3071",
+    "category": "Park",
+    "description": "Council-listed dog off-lead park.",
+    "geocodeSource": "darebin+nominatim",
+    "lat": -37.7540477,
+    "lng": 144.9969817
+  },
+  {
+    "name": "Mayer Park",
+    "address": "141 Normanby Ave Thornbury VIC 3071",
+    "category": "Park",
+    "description": "Council-listed dog off-lead park.",
+    "geocodeSource": "darebin+nominatim",
+    "lat": -37.7581281,
+    "lng": 144.9869988
+  },
+  {
+    "name": "McDonnell Park",
+    "address": "68 Clifton St Northcote VIC 3070",
+    "category": "Park",
+    "description": "Council-listed dog off-lead park.",
+    "geocodeSource": "darebin+nominatim",
+    "lat": -37.7684588,
+    "lng": 145.016332
+  },
+  {
+    "name": "Merri Park",
+    "address": "2 Sumner Ave Northcote VIC 3070",
+    "category": "Park",
+    "description": "Council-listed dog off-lead park.",
+    "geocodeSource": "darebin+nominatim",
+    "lat": -37.770437,
+    "lng": 144.9849827
+  },
+  {
+    "name": "Penders Park",
+    "address": "48A Pender St Thornbury VIC 3071",
+    "category": "Park",
+    "description": "Council-listed dog off-lead park with toilets and walking paths.",
+    "geocodeSource": "darebin+nominatim",
+    "lat": -37.7546034,
+    "lng": 145.0073415
+  },
+  {
+    "name": "T W Blake Park",
+    "address": "82 Gower St Preston VIC 3072",
+    "category": "Park",
+    "description": "Dogs allowed off-lead outside organised sporting hours.",
+    "geocodeSource": "darebin+nominatim",
+    "lat": -37.7415996,
+    "lng": 145.0250268
+  },
+  {
+    "name": "Anderson Park",
+    "address": "Anderson Rd Hawthorn East VIC 3123",
+    "category": "Park",
+    "description": "Council-listed off-lead dog area on the park ovals.",
+    "geocodeSource": "boroondara+nominatim",
+    "lat": -37.8395675,
+    "lng": 145.0488978
+  },
+  {
+    "name": "Fairview Park",
+    "address": "4C Fairview St Hawthorn VIC 3122",
+    "category": "Park",
+    "description": "Generous council-listed off-lead dog area beside the Yarra River.",
+    "geocodeSource": "boroondara+nominatim",
+    "lat": -37.8296824,
+    "lng": 145.0279751
+  },
+  {
+    "name": "Fritsch Holzer Park",
+    "address": "18 Symonds St Hawthorn East VIC 3123",
+    "category": "Park",
+    "description": "Council-listed off-lead dog area with open lawns and walking tracks.",
+    "geocodeSource": "boroondara+nominatim",
+    "lat": -37.8286712,
+    "lng": 145.0499837
+  },
+  {
+    "name": "Grace Park",
+    "address": "2 Hilda Crescent Hawthorn VIC 3122",
+    "category": "Park",
+    "description": "Council-listed off-lead dog area with open lawns.",
+    "geocodeSource": "boroondara+nominatim",
+    "lat": -37.8204608,
+    "lng": 145.0291319
+  },
+  {
+    "name": "H.A. Smith Reserve",
+    "address": "Glenferrie Rd Hawthorn VIC 3122",
+    "category": "Park",
+    "description": "Council-listed off-lead dog area beside Gardiners Creek Trail.",
+    "geocodeSource": "boroondara+nominatim",
+    "lat": -37.829133,
+    "lng": 145.0339817
+  },
+  {
+    "name": "St James Park",
+    "address": "3 Burwood Rd Hawthorn VIC 3122",
+    "category": "Park",
+    "description": "Council-listed off-lead dog area; keep dogs off sportsgrounds during organised sport.",
+    "geocodeSource": "boroondara+nominatim",
+    "lat": -37.8209248,
+    "lng": 145.0211157
+  },
+  {
+    "name": "Wallen Road Reserve",
+    "address": "4 Wallen Rd Hawthorn VIC 3122",
+    "category": "Park",
+    "description": "Council-listed off-lead dog area beside the Yarra River.",
+    "geocodeSource": "boroondara+nominatim",
+    "lat": -37.826806,
+    "lng": 145.0232283
   }
 ]
