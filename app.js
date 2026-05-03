@@ -111,6 +111,9 @@ let isMapExpanded = false;
 let isExpandedFilterSheetOpen = false;
 let searchAnalyticsTimeout = null;
 let lockedScrollY = 0;
+let statusToast = null;
+let statusToastTimeout = null;
+let lastAutoFittedSuburb = "";
 const mobileMapQuery = window.matchMedia("(max-width: 860px)");
 
 function initAnalytics() {
@@ -251,6 +254,32 @@ function getSuburbPlaceCount(query) {
   return places.filter((place) => {
     return getLocationParts(place.address).suburb.toLowerCase() === targetSuburb;
   }).length;
+}
+
+function getExactSearchSuburb(query) {
+  const targetSuburb = cleanSearchQuery(query).toLowerCase();
+
+  if (!targetSuburb) {
+    return "";
+  }
+
+  return suburbs.find((suburb) => suburb.toLowerCase() === targetSuburb) || "";
+}
+
+function shouldFitSearchQuery(query) {
+  const searchSuburb = getExactSearchSuburb(query);
+
+  if (!searchSuburb) {
+    lastAutoFittedSuburb = "";
+    return false;
+  }
+
+  if (searchSuburb === lastAutoFittedSuburb) {
+    return false;
+  }
+
+  lastAutoFittedSuburb = searchSuburb;
+  return true;
 }
 
 function getSuggestionPlaceCount(query) {
@@ -1200,7 +1229,7 @@ function applySearchSuggestion(query) {
   recordSearchQuery(query);
   updateSearchClearButtons();
   hideSearchSuggestions();
-  render({ fitBounds: true });
+  render({ fitBounds: shouldFitSearchQuery(query) });
   trackEvent("search_suggestion_click", {
     search_term: query,
     suggestion_type: isTypedSearch ? "typed" : "recent",
@@ -1332,7 +1361,7 @@ function setupFilters() {
       selectedPlaceId = null;
       map.closePopup();
     }
-    render({ fitBounds: true });
+    render({ fitBounds: shouldFitSearchQuery(searchInput.value) });
     showSearchSuggestions(event.currentTarget);
     queueSearchTracking(event.currentTarget);
   };
@@ -1358,7 +1387,8 @@ function setupFilters() {
       }
 
       updateSearchClearButtons();
-      render({ fitBounds: true });
+      lastAutoFittedSuburb = "";
+      render();
 
       showSearchSuggestions(inputToFocus);
       inputToFocus?.focus();
@@ -1583,6 +1613,54 @@ function setupDesktopZoomControls() {
   updateDesktopZoomControls();
 }
 
+function showStatusToast(message) {
+  if (!statusToast) {
+    statusToast = document.createElement("div");
+    statusToast.className = "status-toast";
+    statusToast.setAttribute("role", "status");
+    statusToast.setAttribute("aria-live", "polite");
+    document.body.append(statusToast);
+  }
+
+  statusToast.textContent = message;
+  statusToast.hidden = false;
+  statusToast.classList.add("is-visible");
+
+  window.clearTimeout(statusToastTimeout);
+  statusToastTimeout = window.setTimeout(() => {
+    statusToast.classList.remove("is-visible");
+  }, 3200);
+}
+
+function locationUnavailableMessage(error) {
+  if (!window.isSecureContext) {
+    return "Location needs the secure website before it can work on mobile.";
+  }
+
+  if (!navigator.geolocation) {
+    return "Location is not available in this browser.";
+  }
+
+  if (error?.code === error?.PERMISSION_DENIED) {
+    return "Location permission was blocked.";
+  }
+
+  if (error?.code === error?.TIMEOUT) {
+    return "Could not find your location. Try again.";
+  }
+
+  return "Could not find your location.";
+}
+
+function flagLocateButtonError() {
+  if (!mapLocateToggle) {
+    return;
+  }
+
+  mapLocateToggle.classList.add("is-error");
+  window.setTimeout(() => mapLocateToggle.classList.remove("is-error"), 1200);
+}
+
 function showUserLocation(position) {
   const { latitude, longitude, accuracy } = position.coords;
   const latLng = [latitude, longitude];
@@ -1614,7 +1692,11 @@ function showUserLocation(position) {
     userLocationMarker.setLatLng(latLng);
   }
 
-  map.flyTo(latLng, zoom, { duration: 0.65 });
+  map.invalidateSize({ pan: false });
+  window.requestAnimationFrame(() => {
+    map.flyTo(latLng, zoom, { duration: 0.65 });
+    window.setTimeout(() => map.invalidateSize({ pan: false }), 240);
+  });
 }
 
 function setLocateButtonLoading(isLoading) {
@@ -1633,18 +1715,27 @@ function setupLocationControl() {
   }
 
   if (!navigator.geolocation) {
-    mapLocateToggle.disabled = true;
     mapLocateToggle.setAttribute("aria-label", "Location is not available in this browser");
-    return;
   }
 
   mapLocateToggle.addEventListener("click", () => {
-    setLocateButtonLoading(true);
     mapLocateToggle.classList.remove("is-error");
     trackEvent("map_locate_click", {
       map_surface: currentMapSurface(),
+      secure_context: window.isSecureContext,
     });
 
+    if (!window.isSecureContext || !navigator.geolocation) {
+      flagLocateButtonError();
+      showStatusToast(locationUnavailableMessage());
+      trackEvent("map_locate_error", {
+        map_surface: currentMapSurface(),
+        error_reason: window.isSecureContext ? "unsupported" : "insecure_context",
+      });
+      return;
+    }
+
+    setLocateButtonLoading(true);
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLocateButtonLoading(false);
@@ -1655,11 +1746,12 @@ function setupLocationControl() {
       },
       (error) => {
         setLocateButtonLoading(false);
-        mapLocateToggle.classList.add("is-error");
-        window.setTimeout(() => mapLocateToggle.classList.remove("is-error"), 1200);
+        flagLocateButtonError();
+        showStatusToast(locationUnavailableMessage(error));
         trackEvent("map_locate_error", {
           map_surface: currentMapSurface(),
           error_code: error.code,
+          error_reason: error.message || "geolocation_error",
         });
       },
       {
