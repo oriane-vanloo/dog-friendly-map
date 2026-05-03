@@ -635,34 +635,6 @@ h1 {
     0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-.status-toast {
-  position: fixed;
-  z-index: 2400;
-  right: 24px;
-  bottom: 24px;
-  max-width: min(360px, calc(100vw - 32px));
-  border: 1px solid rgba(226, 232, 240, 0.92);
-  border-radius: 999px;
-  padding: 12px 16px;
-  color: var(--foreground);
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 18px 42px -24px rgba(30, 41, 59, 0.42);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.25;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(8px);
-  transition:
-    opacity 260ms ease,
-    transform 260ms ease;
-}
-
-.status-toast.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .expanded-map-toolbar,
 .expanded-filter-sheet {
   display: none;
@@ -1692,20 +1664,6 @@ h1 {
     height: 52px;
     background: rgba(255, 255, 255, 0.94);
     box-shadow: 0 14px 32px -18px rgba(30, 41, 59, 0.35);
-  }
-
-  .status-toast {
-    right: 14px;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
-    left: 14px;
-    width: auto;
-    max-width: none;
-    border-radius: 20px;
-    text-align: center;
-  }
-
-  body.map-expanded .status-toast {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 82px);
   }
 
   .leaflet-control-attribution {

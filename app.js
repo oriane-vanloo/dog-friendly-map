@@ -111,8 +111,6 @@ let isMapExpanded = false;
 let isExpandedFilterSheetOpen = false;
 let searchAnalyticsTimeout = null;
 let lockedScrollY = 0;
-let statusToast = null;
-let statusToastTimeout = null;
 let lastAutoFittedSuburb = "";
 const mobileMapQuery = window.matchMedia("(max-width: 860px)");
 
@@ -1613,45 +1611,6 @@ function setupDesktopZoomControls() {
   updateDesktopZoomControls();
 }
 
-function showStatusToast(message) {
-  if (!statusToast) {
-    statusToast = document.createElement("div");
-    statusToast.className = "status-toast";
-    statusToast.setAttribute("role", "status");
-    statusToast.setAttribute("aria-live", "polite");
-    document.body.append(statusToast);
-  }
-
-  statusToast.textContent = message;
-  statusToast.hidden = false;
-  statusToast.classList.add("is-visible");
-
-  window.clearTimeout(statusToastTimeout);
-  statusToastTimeout = window.setTimeout(() => {
-    statusToast.classList.remove("is-visible");
-  }, 3200);
-}
-
-function locationUnavailableMessage(error) {
-  if (!window.isSecureContext) {
-    return "Location needs the secure website before it can work on mobile.";
-  }
-
-  if (!navigator.geolocation) {
-    return "Location is not available in this browser.";
-  }
-
-  if (error?.code === error?.PERMISSION_DENIED) {
-    return "Location permission was blocked.";
-  }
-
-  if (error?.code === error?.TIMEOUT) {
-    return "Could not find your location. Try again.";
-  }
-
-  return "Could not find your location.";
-}
-
 function flagLocateButtonError() {
   if (!mapLocateToggle) {
     return;
@@ -1715,27 +1674,18 @@ function setupLocationControl() {
   }
 
   if (!navigator.geolocation) {
+    mapLocateToggle.disabled = true;
     mapLocateToggle.setAttribute("aria-label", "Location is not available in this browser");
+    return;
   }
 
   mapLocateToggle.addEventListener("click", () => {
+    setLocateButtonLoading(true);
     mapLocateToggle.classList.remove("is-error");
     trackEvent("map_locate_click", {
       map_surface: currentMapSurface(),
-      secure_context: window.isSecureContext,
     });
 
-    if (!window.isSecureContext || !navigator.geolocation) {
-      flagLocateButtonError();
-      showStatusToast(locationUnavailableMessage());
-      trackEvent("map_locate_error", {
-        map_surface: currentMapSurface(),
-        error_reason: window.isSecureContext ? "unsupported" : "insecure_context",
-      });
-      return;
-    }
-
-    setLocateButtonLoading(true);
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLocateButtonLoading(false);
@@ -1747,7 +1697,6 @@ function setupLocationControl() {
       (error) => {
         setLocateButtonLoading(false);
         flagLocateButtonError();
-        showStatusToast(locationUnavailableMessage(error));
         trackEvent("map_locate_error", {
           map_surface: currentMapSurface(),
           error_code: error.code,
