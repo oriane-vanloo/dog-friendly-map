@@ -1661,6 +1661,7 @@ h1 {
   }
 
   .map-locate-toggle {
+    display: none;
     right: 72px;
     bottom: 16px;
     width: 44px;
@@ -1682,6 +1683,7 @@ h1 {
 
   .map-panel.is-expanded .map-locate-toggle {
     position: fixed;
+    display: none;
     z-index: 1880;
     top: auto;
     right: 16px;
