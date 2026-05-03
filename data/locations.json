@@ -209,6 +209,15 @@
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Bunnings Collingwood",
+    "address": "179-201 Victoria Parade Collingwood VIC 3066",
+    "category": "Shop",
+    "description": "Dogs permitted in-store under Bunnings pet entry rules.",
+    "lat": -37.8090494,
+    "lng": 144.9900076,
+    "geocodeSource": "facebook+web"
+  },
+  {
     "name": "Cafe Gaia",
     "address": "4 Avoca St South Yarra VIC 3141",
     "category": "Cafe",
@@ -554,6 +563,16 @@
     "geocodeSource": "facebook+nominatim"
   },
   {
+    "name": "Joan",
+    "address": "8/50 Albert St Brunswick East VIC 3057",
+    "category": "Cafe",
+    "description": "Dogs especially welcome at this cafe opposite Fleming Park.",
+    "lat": -37.77049,
+    "lng": 144.9764,
+    "geocodeSource": "facebook+web",
+    "instagramUrl": "https://www.instagram.com/joanspecialtycoffee/"
+  },
+  {
     "name": "Joey Smalls",
     "address": "284 Sydney Rd Brunswick VIC 3056",
     "category": "Pub/Bar",
@@ -597,6 +616,16 @@
     "lat": -37.8020324,
     "lng": 144.9764075,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "Labour in Vain",
+    "address": "197A Brunswick St Fitzroy VIC 3065",
+    "category": "Pub/Bar",
+    "description": "Dogs welcome in the bar and upstairs beer garden.",
+    "lat": -37.80146,
+    "lng": 144.97771,
+    "geocodeSource": "facebook+web",
+    "instagramUrl": "https://www.instagram.com/labourinvainhotel/"
   },
   {
     "name": "Lawson Grove Shop",

@@ -77,6 +77,7 @@ const selectedPlaceDefaultNextSibling = selectedPlace.nextSibling;
 const filterButtons = [...document.querySelectorAll(".filter-button")];
 const searchClearButtons = [...document.querySelectorAll("[data-clear-search]")];
 const searchSuggestionPanels = [...document.querySelectorAll("[data-search-suggestions]")];
+const sidebar = document.querySelector(".sidebar");
 const mapElement = document.querySelector("#map");
 const mapPanel = document.querySelector(".map-panel");
 const mapExpandToggle = document.querySelector("#mapExpandToggle");
@@ -1036,6 +1037,12 @@ function shouldUseBottomSheet() {
   return mobileMapQuery.matches;
 }
 
+function updatePlaceListSelection() {
+  placeList.querySelectorAll(".place-card").forEach((card) => {
+    card.classList.toggle("selected", card.dataset.placeId === selectedPlaceId);
+  });
+}
+
 function syncSelectedPlacePanel() {
   const selectedPlaceInView = getFilteredPlaces().find((place) => place.id === selectedPlaceId);
 
@@ -1090,7 +1097,8 @@ function keepSelectedCardVisible({ behavior = "smooth" } = {}) {
 
 function selectPlace(place, { openPopup = false, pan = false, source = "unknown" } = {}) {
   selectedPlaceId = place.id;
-  render();
+  updatePlaceListSelection();
+  syncSelectedPlacePanel();
   trackEvent("place_select", {
     ...placeAnalyticsParams(place),
     selection_source: source,
@@ -1111,7 +1119,8 @@ function selectPlace(place, { openPopup = false, pan = false, source = "unknown"
 function clearSelectedPlace() {
   selectedPlaceId = null;
   map.closePopup();
-  render();
+  updatePlaceListSelection();
+  syncSelectedPlacePanel();
 }
 
 function setMapInteractivity(enabled) {
@@ -1438,6 +1447,33 @@ function setupSearchSuggestions() {
       hideSearchSuggestions();
     }
   });
+}
+
+function setupDesktopSidebarGutterScroll() {
+  if (!sidebar || !placeList) {
+    return;
+  }
+
+  sidebar.addEventListener("wheel", (event) => {
+    if (mobileMapQuery.matches || !(event.target instanceof Element) || event.target.closest(".place-list")) {
+      return;
+    }
+
+    const listRect = placeList.getBoundingClientRect();
+    const isBesideList = event.clientY >= listRect.top && event.clientY <= listRect.bottom;
+    const canScrollDown = event.deltaY > 0 && placeList.scrollTop + placeList.clientHeight < placeList.scrollHeight;
+    const canScrollUp = event.deltaY < 0 && placeList.scrollTop > 0;
+
+    if (!isBesideList || (!canScrollDown && !canScrollUp)) {
+      return;
+    }
+
+    event.preventDefault();
+    placeList.scrollBy({
+      top: event.deltaY,
+      left: event.deltaX,
+    });
+  }, { passive: false });
 }
 
 function setupActionTracking() {
@@ -1795,6 +1831,7 @@ async function init() {
   setupMarkers();
   setupFilters();
   setupSearchSuggestions();
+  setupDesktopSidebarGutterScroll();
   setupActionTracking();
   render({ fitBounds: true });
   [60, 180, 420, 900].forEach((delay) => {
