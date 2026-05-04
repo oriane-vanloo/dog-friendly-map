@@ -55,6 +55,16 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "geocodeSource": "nominatim"
   },
   {
+    "name": "Artiga Specialty Coffee",
+    "address": "Unit 65/327 Mansfield St Thornbury VIC 3071",
+    "category": "Cafe",
+    "description": "Dog-friendly patio by the Darebin Creek Trail.",
+    "instagramUrl": "https://www.instagram.com/artiga_coffee/",
+    "lat": -37.75915,
+    "lng": 145.02865,
+    "geocodeSource": "web"
+  },
+  {
     "name": "Atherton Reserve",
     "address": "187 Napier St Fitzroy VIC 3065",
     "category": "Park",
@@ -1154,6 +1164,16 @@ window.DOG_FRIENDLY_LOCATIONS = [
     "lat": -37.8109133,
     "lng": 145.0028288,
     "geocodeSource": "nominatim"
+  },
+  {
+    "name": "The Old Milk Bar",
+    "address": "144 Dundas St Thornbury VIC 3071",
+    "category": "Cafe",
+    "description": "User-recommended dog-friendly cafe.",
+    "instagramUrl": "https://www.instagram.com/theoldmilkbar/",
+    "lat": -37.7542002,
+    "lng": 145.0165393,
+    "geocodeSource": "facebook+web"
   },
   {
     "name": "The Palace Hotel",
