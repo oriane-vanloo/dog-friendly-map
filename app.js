@@ -27,27 +27,43 @@ const activeCategories = new Set(Object.keys(categoryMeta));
 const markersByPlace = new Map();
 const markerLayer = L.layerGroup();
 const suburbs = [
+  "Albert Park",
+  "Alphington",
+  "Balaclava",
   "Brunswick East",
+  "Brunswick West",
+  "Brunswick",
+  "Burnley",
+  "Carlton",
   "Carlton North",
   "Clifton Hill",
   "Collingwood",
+  "Docklands",
   "East St Kilda",
+  "Elwood",
+  "Fairfield",
   "Fitzroy North",
   "Fitzroy",
+  "Kensington",
   "Melbourne",
+  "North Melbourne",
   "Northcote",
+  "Parkville",
   "Port Melbourne",
   "Prahran",
+  "Princes Hill",
+  "Preston",
   "Richmond",
   "South Melbourne",
+  "Southbank",
   "South Yarra",
   "St Kilda East",
   "St Kilda West",
   "St Kilda",
+  "Thornbury",
+  "Toorak",
   "Windsor",
   "Abbotsford",
-  "Brunswick",
-  "Balaclava",
 ].sort((a, b) => b.length - a.length);
 
 let map;
@@ -202,6 +218,10 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function slugify(value) {
@@ -492,8 +512,13 @@ function getTypedSearchSuggestions(query) {
 
 function getLocationParts(address) {
   const cleanedAddress = address.replace(/,\s*Australia$/i, "").trim();
+  let suburbMatch = null;
   const suburb = suburbs.find((value) => {
-    return cleanedAddress.includes(` ${value} VIC`) || cleanedAddress.endsWith(` ${value}`);
+    const match = cleanedAddress.match(
+      new RegExp(`,?\\s+${escapeRegExp(value)}(?:\\s+VIC(?:\\s+\\d{4})?|$)`, "i")
+    );
+    suburbMatch = match;
+    return Boolean(match);
   });
 
   if (!suburb) {
@@ -504,7 +529,8 @@ function getLocationParts(address) {
   }
 
   const streetAddress = cleanedAddress
-    .slice(0, cleanedAddress.indexOf(` ${suburb}`))
+    .slice(0, suburbMatch.index)
+    .replace(/[,\s]+$/g, "")
     .replace(/\s+/g, " ")
     .trim();
 
